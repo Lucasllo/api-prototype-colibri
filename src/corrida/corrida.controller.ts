@@ -11,32 +11,35 @@ import { CorridaService } from './corrida.service';
 import { CreateCorridaDto } from './dto/create-corrida.dto';
 import { UpdateCorridaDto } from './dto/update-corrida.dto';
 
-@Controller('corridas')
+@Controller('corrida')
 export class CorridaController {
   constructor(private readonly corridaService: CorridaService) {}
 
   @Post()
-  create(@Body() createCorridaDto: CreateCorridaDto) {
+  async create(@Body() createCorridaDto: CreateCorridaDto) {
     return this.corridaService.create(createCorridaDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.corridaService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.corridaService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.corridaService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCorridaDto: UpdateCorridaDto) {
-    return this.corridaService.update(+id, updateCorridaDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCorridaDto: UpdateCorridaDto,
+  ) {
+    return this.corridaService.update(id, updateCorridaDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.corridaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.corridaService.remove(id);
   }
 }

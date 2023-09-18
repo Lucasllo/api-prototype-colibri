@@ -11,35 +11,35 @@ import { MensagemService } from './mensagem.service';
 import { CreateMensagemDto } from './dto/create-mensagem.dto';
 import { UpdateMensagemDto } from './dto/update-mensagem.dto';
 
-@Controller('mensagens')
+@Controller('mensagem')
 export class MensagemController {
   constructor(private readonly mensagemService: MensagemService) {}
 
   @Post()
-  create(@Body() createMensagemDto: CreateMensagemDto) {
+  async create(@Body() createMensagemDto: CreateMensagemDto) {
     return this.mensagemService.create(createMensagemDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.mensagemService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mensagemService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.mensagemService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateMensagemDto: UpdateMensagemDto,
   ) {
-    return this.mensagemService.update(+id, updateMensagemDto);
+    return this.mensagemService.update(id, updateMensagemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.mensagemService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.mensagemService.remove(id);
   }
 }

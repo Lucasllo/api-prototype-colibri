@@ -16,30 +16,30 @@ export class CarteiraController {
   constructor(private readonly carteiraService: CarteiraService) {}
 
   @Post()
-  create(@Body() createCarteiraDto: CreateCarteiraDto) {
+  async create(@Body() createCarteiraDto: CreateCarteiraDto) {
     return this.carteiraService.create(createCarteiraDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.carteiraService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.carteiraService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return this.carteiraService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCarteiraDto: UpdateCarteiraDto,
   ) {
-    return this.carteiraService.update(+id, updateCarteiraDto);
+    return this.carteiraService.update(id, updateCarteiraDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.carteiraService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return this.carteiraService.remove(id);
   }
 }
