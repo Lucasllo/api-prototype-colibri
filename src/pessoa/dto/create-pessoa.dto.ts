@@ -1,6 +1,17 @@
-import { IsBoolean, IsEmail, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
 
 export class CreatePessoaDto {
+  @IsOptional()
+  @IsNumber()
+  id?: number;
+
   @IsString()
   nome: string;
 
@@ -13,15 +24,29 @@ export class CreatePessoaDto {
   @IsString()
   cpf: string;
 
+  @IsOptional()
   @IsString()
-  veiculo: string;
+  veiculo?: string;
 
+  @IsOptional()
   @IsString()
-  CNH: string;
+  CNH?: string;
 
+  @IsOptional()
   @IsString()
-  perfilImage: string;
+  perfilImage?: string;
 
+  @IsOptional()
   @IsBoolean()
-  online: boolean;
+  online?: boolean;
+
+  @IsStrongPassword({
+    minLength: 6,
+    minLowercase: 0,
+    minNumbers: 0,
+    minSymbols: 0,
+    minUppercase: 0,
+  })
+  @IsString()
+  senha: string;
 }

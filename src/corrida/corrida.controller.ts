@@ -6,11 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/roles.decorator';
 import { CorridaService } from './corrida.service';
 import { CreateCorridaDto } from './dto/create-corrida.dto';
 import { UpdateCorridaDto } from './dto/update-corrida.dto';
+import { Role } from '../enum/role.enum';
+import { RoleGuard } from '../guard/role.guard';
 
+@Roles(Role.Admin)
+@UseGuards(RoleGuard)
+@ApiTags('corrida')
 @Controller('corrida')
 export class CorridaController {
   constructor(private readonly corridaService: CorridaService) {}

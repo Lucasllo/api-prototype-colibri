@@ -3,20 +3,33 @@ import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PessoaRepository } from './pessoa.repository';
 import * as firebase from 'firebase-admin';
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class PessoaService {
-  repository = new PessoaRepository();
+  private repository = new PessoaRepository();
 
-  create(createPessoaDto: CreatePessoaDto) {
+  async create(createPessoaDto: CreatePessoaDto) {
+    createPessoaDto.senha = await bcrypt.hash(
+      createPessoaDto.senha,
+      await bcrypt.genSalt(),
+    );
+
     const pessoa = {
       ...createPessoaDto,
       ativo: false,
+      role: 1,
+      veiculo: '',
+      CNH: '',
+      perfilImage: '',
+      online: false,
       dataCadastro: new Date(),
     };
+
     return this.repository.create(pessoa);
   }
 
-  findAll() {
+  async findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
       this.repository.getAll();
     lista.then((pessoa) =>
@@ -27,15 +40,15 @@ export class PessoaService {
     return lista;
   }
 
-  findOne(id: string) {
+  async findOne(id: number) {
     return this.repository.getUser(id);
   }
 
-  update(id: string, updatePessoaDto: UpdatePessoaDto) {
+  async update(id: string, updatePessoaDto: UpdatePessoaDto) {
     return this.repository.update(id, updatePessoaDto);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     const desativa = { ativo: false };
     return this.repository.remove(id, desativa);
   }

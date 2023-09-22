@@ -6,11 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CarteiraService } from './carteira.service';
 import { CreateCarteiraDto } from './dto/create-carteira.dto';
 import { UpdateCarteiraDto } from './dto/update-carteira.dto';
+import { Role } from '../enum/role.enum';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RoleGuard } from '../guard/role.guard';
 
+@Roles(Role.Admin)
+@UseGuards(RoleGuard)
+@ApiTags('carteira')
 @Controller('carteira')
 export class CarteiraController {
   constructor(private readonly carteiraService: CarteiraService) {}

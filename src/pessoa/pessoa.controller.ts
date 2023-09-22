@@ -6,29 +6,39 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
-
-@Controller('pessoas')
+import { RoleGuard } from '../guard/role.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from '../enum/role.enum';
+import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/decorators/public.decorator';
+@Roles(Role.Admin)
+@UseGuards(RoleGuard)
+@ApiTags('pessoa')
+@Controller('pessoa')
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
+  @Public()
   @Post()
   async create(@Body() createPessoaDto: CreatePessoaDto) {
-    return this.pessoaService.create(createPessoaDto);
+    this.pessoaService.create(createPessoaDto);
   }
 
   @Get()
-  async findAll() {
-    return this.pessoaService.findAll();
+  async findOne(@Req() req) {
+    return req.user;
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.pessoaService.findOne(id);
-  }
+  // @Get(':id')
+  // async findOne(@Param('id') id: string) {
+  //   return this.pessoaService.findOne(Number(id));
+  // }
 
   @Patch(':id')
   async update(
