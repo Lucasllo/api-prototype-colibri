@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FileService } from './file.service';
 import {
   FileFieldsInterceptor,
@@ -16,6 +16,7 @@ import {
 } from '@nestjs/platform-express';
 
 @ApiTags('file')
+@ApiBearerAuth('access-token')
 @Controller('file')
 export class FileController {
   constructor(private readonly fileService: FileService) {}
