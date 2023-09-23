@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { CorridaService } from './corrida.service';
 import { CreateCorridaDto } from './dto/create-corrida.dto';
@@ -16,6 +16,7 @@ import { UpdateCorridaDto } from './dto/update-corrida.dto';
 import { Role } from '../enum/role.enum';
 import { RoleGuard } from '../guard/role.guard';
 
+@ApiBearerAuth('access-token')
 @Roles(Role.Admin)
 @UseGuards(RoleGuard)
 @ApiTags('corrida')

@@ -48,10 +48,14 @@ export class AuthRepository {
     }
   }
 
-  public async login({ email, senha }: LoginAuthDto): Promise<any> {
+  public async login({
+    email,
+    senha,
+  }: LoginAuthDto): Promise<{ token: string }> {
     let result = null;
-    const usuario = this._collectionRef.where('email', '==', email);
-
+    const usuario = this._collectionRef
+      .where('email', '==', email)
+      .where('ativo', '==', true);
     await usuario.get().then((u) => {
       u.forEach((u) => {
         result = u.data();

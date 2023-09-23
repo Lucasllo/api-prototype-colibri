@@ -5,26 +5,26 @@ import { CarteiraRepository } from './carteira.repository';
 
 @Injectable()
 export class CarteiraService {
-  repository = new CarteiraRepository();
+  constructor(private readonly carteiraRepository: CarteiraRepository) {}
 
   create(createCarteiraDto: CreateCarteiraDto) {
-    return this.repository.create(createCarteiraDto);
+    return this.carteiraRepository.create(createCarteiraDto);
   }
 
   findAll() {
-    return this.repository.getAll();
+    return this.carteiraRepository.getAll();
   }
 
   findOne(id: string) {
-    return this.repository.getUser(id);
+    return this.carteiraRepository.getUser(id);
   }
 
   update(id: string, updateCarteiraDto: UpdateCarteiraDto) {
-    return this.repository.update(id, updateCarteiraDto);
+    return this.carteiraRepository.update(id, updateCarteiraDto);
   }
 
   remove(id: string) {
     const desativa = { ativo: false };
-    return this.repository.remove(id, desativa);
+    return this.carteiraRepository.remove(id, desativa);
   }
 }

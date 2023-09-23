@@ -14,11 +14,14 @@ async function bootstrap() {
     .setTitle('Documentação com Swagger - Colibri')
     .setDescription('Documentação da API - Colibri.')
     .setVersion('1.0')
-    .addTag('auth')
-    .addTag('pessoa')
-    .addTag('mensagem')
-    .addTag('carteira')
-    .addTag('corrida')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
     .build();
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());

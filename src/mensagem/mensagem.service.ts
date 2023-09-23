@@ -6,15 +6,15 @@ import * as firebase from 'firebase-admin';
 
 @Injectable()
 export class MensagemService {
-  repository = new MensagemRepository();
+  constructor(private readonly mensagemRepository: MensagemRepository) {}
 
   create(createMensagemDto: CreateMensagemDto) {
-    return this.repository.create(createMensagemDto);
+    return this.mensagemRepository.create(createMensagemDto);
   }
 
   findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
-      this.repository.getAll();
+      this.mensagemRepository.getAll();
     lista.then((mensagem) =>
       mensagem.map((mensagem) => {
         mensagem.data = new Date(mensagem.data?.seconds * 1000);
@@ -24,15 +24,15 @@ export class MensagemService {
   }
 
   findOne(id: string) {
-    return this.repository.getUser(id);
+    return this.mensagemRepository.getUser(id);
   }
 
   update(id: string, updateMensagemDto: UpdateMensagemDto) {
-    return this.repository.update(id, updateMensagemDto);
+    return this.mensagemRepository.update(id, updateMensagemDto);
   }
 
   remove(id: string) {
     const desativa = { ativo: false };
-    return this.repository.remove(id, desativa);
+    return this.mensagemRepository.remove(id, desativa);
   }
 }

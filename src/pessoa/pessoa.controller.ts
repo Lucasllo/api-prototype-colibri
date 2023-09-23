@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   Delete,
   UseGuards,
   Req,
@@ -15,9 +14,9 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { RoleGuard } from '../guard/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/decorators/public.decorator';
-@Roles(Role.Admin)
+@Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
 @Controller('pessoa')
@@ -30,9 +29,10 @@ export class PessoaController {
     this.pessoaService.create(createPessoaDto);
   }
 
+  @ApiBearerAuth('access-token')
   @Get()
   async findOne(@Req() req) {
-    return req.user;
+    return this.pessoaService.getUser(req.user);
   }
 
   // @Get(':id')
@@ -40,16 +40,15 @@ export class PessoaController {
   //   return this.pessoaService.findOne(Number(id));
   // }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updatePessoaDto: UpdatePessoaDto,
-  ) {
-    return this.pessoaService.update(id, updatePessoaDto);
+  @ApiBearerAuth('access-token')
+  @Patch()
+  async update(@Req() req, @Body() updatePessoaDto: UpdatePessoaDto) {
+    return this.pessoaService.update(req.user.id, updatePessoaDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.pessoaService.remove(id);
+  @ApiBearerAuth('access-token')
+  @Delete()
+  async remove(@Req() req) {
+    return this.pessoaService.remove(req.user.id);
   }
 }

@@ -1,4 +1,6 @@
 export class Pessoa {
+  id: number;
+
   nome: string;
 
   email: string;
@@ -26,4 +28,6 @@ export class Pessoa {
   ativo: boolean;
 
   online: boolean;
+
+  role: number;
 }

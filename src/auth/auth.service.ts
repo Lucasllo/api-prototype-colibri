@@ -6,7 +6,7 @@ import { AuthRepository } from './auth.repository';
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) {}
 
-  login(loginAuthDto: LoginAuthDto) {
+  login(loginAuthDto: LoginAuthDto): Promise<{ token: string }> {
     return this.authRepository.login(loginAuthDto);
   }
 

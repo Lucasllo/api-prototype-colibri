@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CarteiraService } from './carteira.service';
 import { CreateCarteiraDto } from './dto/create-carteira.dto';
 import { UpdateCarteiraDto } from './dto/update-carteira.dto';
@@ -16,6 +16,7 @@ import { Role } from '../enum/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from '../guard/role.guard';
 
+@ApiBearerAuth('access-token')
 @Roles(Role.Admin)
 @UseGuards(RoleGuard)
 @ApiTags('carteira')

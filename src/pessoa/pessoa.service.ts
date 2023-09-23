@@ -4,10 +4,12 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PessoaRepository } from './pessoa.repository';
 import * as firebase from 'firebase-admin';
 import * as bcrypt from 'bcrypt';
+import { Pessoa } from './entities/pessoa.entity';
+import { GetPessoaDto } from './dto/get-pessoa.dto';
 
 @Injectable()
 export class PessoaService {
-  private repository = new PessoaRepository();
+  constructor(private readonly pessoarepository: PessoaRepository) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
     createPessoaDto.senha = await bcrypt.hash(
@@ -15,23 +17,27 @@ export class PessoaService {
       await bcrypt.genSalt(),
     );
 
-    const pessoa = {
+    const pessoa: Pessoa = {
+      id: null,
       ...createPessoaDto,
-      ativo: false,
+      ativo: true,
       role: 1,
       veiculo: '',
       CNH: '',
-      perfilImage: '',
+      termos: true,
+      CHNImagem: '',
+      CLRVImagem: '',
+      perfilImagem: '',
       online: false,
       dataCadastro: new Date(),
     };
 
-    return this.repository.create(pessoa);
+    return this.pessoarepository.create(pessoa);
   }
 
   async findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
-      this.repository.getAll();
+      this.pessoarepository.getAll();
     lista.then((pessoa) =>
       pessoa.map((pessoa) => {
         pessoa.dataCadastro = new Date(pessoa.dataCadastro?.seconds * 1000);
@@ -41,15 +47,25 @@ export class PessoaService {
   }
 
   async findOne(id: number) {
-    return this.repository.getUser(id);
+    return this.pessoarepository.getUser(id);
+  }
+
+  async getUser(user: Pessoa): Promise<GetPessoaDto> {
+    const userDto: GetPessoaDto = {
+      nome: user.nome,
+      cpf: user.cpf,
+      email: user.email,
+      telefone: user.telefone,
+    };
+    return userDto;
   }
 
   async update(id: string, updatePessoaDto: UpdatePessoaDto) {
-    return this.repository.update(id, updatePessoaDto);
+    return this.pessoarepository.update(id, updatePessoaDto);
   }
 
   async remove(id: string) {
     const desativa = { ativo: false };
-    return this.repository.remove(id, desativa);
+    return this.pessoarepository.remove(id, desativa);
   }
 }

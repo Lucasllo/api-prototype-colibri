@@ -10,6 +10,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthGuard } from './guard/auth.guard';
 import { AuthService } from './auth/auth.service';
 import { ConfigModule } from '@nestjs/config';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ConfigModule } from '@nestjs/config';
     CarteiraModule,
     MensagemModule,
     AuthModule,
+    FileModule,
   ],
   controllers: [],
   providers: [

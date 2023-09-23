@@ -1,5 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import * as firebase from 'firebase-admin';
+import { Pessoa } from './entities/pessoa.entity';
 
 @Injectable()
 export class PessoaRepository {
@@ -28,16 +33,34 @@ export class PessoaRepository {
     return (await this._collectionRef.get()).docs.map((doc) => doc.data());
   }
 
-  public async create(pessoa): Promise<any> {
+  public async create(pessoa: Pessoa): Promise<any> {
     pessoa.id = (await this._collectionRef.count().get()).data().count + 1;
     return this._collectionRef.add(pessoa);
   }
 
   public async update(id: string, pessoa: any) {
-    return this._collectionRef.doc(id).update(pessoa);
+    try {
+      const usuario = this._collectionRef.where('id', '==', id);
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          this._collectionRef.doc(u.id).update(pessoa);
+        });
+      });
+    } catch (error) {
+      throw new BadRequestException('Erro ao fazer update');
+    }
   }
 
   public async remove(id: string, pessoa: any) {
-    return this._collectionRef.doc(id).update(pessoa);
+    try {
+      const usuario = this._collectionRef.where('id', '==', id);
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          this._collectionRef.doc(u.id).update(pessoa);
+        });
+      });
+    } catch (error) {
+      throw new BadRequestException('Erro ao excluir conta');
+    }
   }
 }
