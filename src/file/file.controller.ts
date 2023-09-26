@@ -48,7 +48,6 @@ export class FileController {
     },
   ) {
     try {
-      console.log(files);
       await this.fileService.photo(req.user, files);
     } catch (error) {
       throw new BadRequestException('Erro com envio.');

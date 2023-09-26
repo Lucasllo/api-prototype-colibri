@@ -8,13 +8,26 @@ import * as firebase from 'firebase-admin';
 export class CorridaService {
   constructor(private readonly corridaRepository: CorridaRepository) {}
 
-  create(createCorridaDto: CreateCorridaDto) {
-    return this.corridaRepository.create(createCorridaDto);
+  create(createCorridaDto: CreateCorridaDto, userId: number) {
+    return this.corridaRepository.create(createCorridaDto, userId);
   }
 
   findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
       this.corridaRepository.getAll();
+    lista.then((corrida) =>
+      corrida.map((corrida) => {
+        corrida.data = new Date(corrida.data?.seconds * 1000);
+        corrida.horaInicial = new Date(corrida.horaInicial?.seconds * 1000);
+        corrida.horaFinal = new Date(corrida.horaFinal?.seconds * 1000);
+      }),
+    );
+    return lista;
+  }
+
+  findAllByUser(userId: number) {
+    const lista: Promise<firebase.firestore.DocumentData[]> =
+      this.corridaRepository.findAllByUser(userId);
     lista.then((corrida) =>
       corrida.map((corrida) => {
         corrida.data = new Date(corrida.data?.seconds * 1000);

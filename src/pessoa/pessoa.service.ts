@@ -60,7 +60,7 @@ export class PessoaService {
     return userDto;
   }
 
-  async update(id: string, updatePessoaDto: UpdatePessoaDto) {
+  async update(id: number, updatePessoaDto: UpdatePessoaDto) {
     return this.pessoarepository.update(id, updatePessoaDto);
   }
 

@@ -8,8 +8,8 @@ import * as firebase from 'firebase-admin';
 export class MensagemService {
   constructor(private readonly mensagemRepository: MensagemRepository) {}
 
-  create(createMensagemDto: CreateMensagemDto) {
-    return this.mensagemRepository.create(createMensagemDto);
+  create(createMensagemDto: CreateMensagemDto, id: number) {
+    return this.mensagemRepository.create(createMensagemDto, id);
   }
 
   findAll() {
@@ -23,8 +23,19 @@ export class MensagemService {
     return lista;
   }
 
+  findAllByUser(userId: number) {
+    const lista: Promise<firebase.firestore.DocumentData[]> =
+      this.mensagemRepository.getAllByUser(userId);
+    lista.then((mensagem) =>
+      mensagem.map((mensagem) => {
+        mensagem.data = new Date(mensagem.data?.seconds * 1000);
+      }),
+    );
+    return lista;
+  }
+
   findOne(id: string) {
-    return this.mensagemRepository.getUser(id);
+    return this.mensagemRepository.getMensagem(id);
   }
 
   update(id: string, updateMensagemDto: UpdateMensagemDto) {

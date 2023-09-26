@@ -38,7 +38,7 @@ export class PessoaRepository {
     return this._collectionRef.add(pessoa);
   }
 
-  public async update(id: string, pessoa: any) {
+  public async update(id: number, pessoa: any) {
     try {
       const usuario = this._collectionRef.where('id', '==', id);
       await usuario.get().then((u) => {

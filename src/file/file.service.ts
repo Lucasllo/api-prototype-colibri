@@ -27,7 +27,7 @@ export class FileService {
       '..',
       'storage',
       'foto_CNH',
-      `photo_perfil_${user.id}.jpeg`,
+      `photo_cnh_${user.id}.jpeg`,
     );
 
     const path_clrv = join(
@@ -36,7 +36,7 @@ export class FileService {
       '..',
       'storage',
       'foto_CLRV',
-      `photo_perfil_${user.id}.jpeg`,
+      `photo_clrv_${user.id}.jpeg`,
     );
 
     await writeFile(path_perfil, files.foto_perfil[0].buffer);
@@ -64,7 +64,7 @@ export class FileService {
       '..',
       'storage',
       'foto_CNH',
-      `photo_perfil_${user.id}.jpeg`,
+      `photo_cnh_${user.id}.jpeg`,
     );
 
     return await writeFile(path_cnh, file.buffer);
@@ -77,7 +77,7 @@ export class FileService {
       '..',
       'storage',
       'foto_CLRV',
-      `photo_perfil_${user.id}.jpeg`,
+      `photo_clrv_${user.id}.jpeg`,
     );
 
     return await writeFile(path_clrv, file.buffer);

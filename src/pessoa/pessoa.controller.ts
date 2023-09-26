@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Param,
 } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
@@ -43,7 +44,16 @@ export class PessoaController {
   @ApiBearerAuth('access-token')
   @Patch()
   async update(@Req() req, @Body() updatePessoaDto: UpdatePessoaDto) {
-    return this.pessoaService.update(req.user.id, updatePessoaDto);
+    return this.pessoaService.update(Number(req.user.id), updatePessoaDto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @Patch('veiculo/:idUser')
+  async updateVeiculo(
+    @Param() idUser,
+    @Body() updatePessoaDto: UpdatePessoaDto,
+  ) {
+    return this.pessoaService.update(Number(idUser), updatePessoaDto);
   }
 
   @ApiBearerAuth('access-token')

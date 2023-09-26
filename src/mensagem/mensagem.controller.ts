@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { MensagemService } from './mensagem.service';
 import { CreateMensagemDto } from './dto/create-mensagem.dto';
@@ -23,9 +24,18 @@ import { Role } from '../enum/role.enum';
 export class MensagemController {
   constructor(private readonly mensagemService: MensagemService) {}
 
-  @Post()
-  async create(@Body() createMensagemDto: CreateMensagemDto) {
-    return this.mensagemService.create(createMensagemDto);
+  @Post(':id')
+  async create(
+    @Body() createMensagemDto: CreateMensagemDto,
+    @Param('id') id: string,
+  ) {
+    return this.mensagemService.create(createMensagemDto, Number(id));
+  }
+
+  @Roles(Role.User)
+  @Get('user')
+  async findAllByUser(@Req() req) {
+    return this.mensagemService.findAllByUser(Number(req.user.id));
   }
 
   @Get()

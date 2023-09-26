@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -24,9 +25,19 @@ import { RoleGuard } from '../guard/role.guard';
 export class CorridaController {
   constructor(private readonly corridaService: CorridaService) {}
 
-  @Post()
-  async create(@Body() createCorridaDto: CreateCorridaDto) {
-    return this.corridaService.create(createCorridaDto);
+  @Post(':id')
+  async create(
+    @Body() createCorridaDto: CreateCorridaDto,
+    @Param('id') id: string,
+  ) {
+    return this.corridaService.create(createCorridaDto, Number(id));
+  }
+
+  @Roles(Role.User)
+  @Get('user')
+  @Get()
+  async findAllByUser(@Req() req) {
+    return this.corridaService.findAllByUser(Number(req.user.id));
   }
 
   @Get()
