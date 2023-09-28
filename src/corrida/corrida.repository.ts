@@ -33,7 +33,7 @@ export class CorridaRepository {
   public async findAllByUser(
     userId: number,
   ): Promise<firebase.firestore.DocumentData[]> {
-    if (userId == NaN) {
+    if (Number.isNaN(userId)) {
       throw new BadRequestException('Pessoa não encontrado');
     }
     let pessoaRef = null;

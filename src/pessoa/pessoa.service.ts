@@ -52,6 +52,7 @@ export class PessoaService {
 
   async getUser(user: Pessoa): Promise<GetPessoaDto> {
     const userDto: GetPessoaDto = {
+      id: user.id,
       nome: user.nome,
       cpf: user.cpf,
       email: user.email,

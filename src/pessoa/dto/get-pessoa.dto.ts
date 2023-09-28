@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsString } from 'class-validator';
 
 export class GetPessoaDto {
+  @ApiProperty({
+    example: '1',
+    description: 'ID do cliente',
+  })
+  @IsNumber()
+  id: number;
+
   @ApiProperty({
     example: 'Joao',
     description: 'Nome do cliente',
