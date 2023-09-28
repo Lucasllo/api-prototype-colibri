@@ -49,12 +49,12 @@ export class AuthRepository {
   }
 
   public async login({
-    email,
+    login,
     senha,
   }: LoginAuthDto): Promise<{ token: string }> {
     let result = null;
     const usuario = this._collectionRef
-      .where('email', '==', email)
+      .where('email', '==', login)
       .where('ativo', '==', true);
     await usuario.get().then((u) => {
       u.forEach((u) => {
