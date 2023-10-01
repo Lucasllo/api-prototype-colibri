@@ -8,7 +8,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { MensagemService } from '../services/mensagem.service';
 import { UpdateMensagemDto } from '../dto/mensagem/update-mensagem.dto';
@@ -16,6 +15,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoleGuard } from '../guard/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
+import { User } from 'src/decorators/user.decorator';
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin)
 @UseGuards(RoleGuard)
@@ -34,8 +34,8 @@ export class MensagemController {
 
   @Roles(Role.User)
   @Get('user')
-  async findAllByUser(@Req() req) {
-    return this.mensagemService.findAllByUser(Number(req.user.id));
+  async findAllByUser(@User() user) {
+    return this.mensagemService.findAllByUser(Number(user.id));
   }
 
   @Get()

@@ -62,6 +62,17 @@ export class AuthRepository {
       });
     });
 
+    if (result != null) {
+      const usuario = this._collectionRef
+        .where('telefone', '==', login)
+        .where('ativo', '==', true);
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          result = u.data();
+        });
+      });
+    }
+
     if (result != null && (await bcrypt.compare(senha, result.senha))) {
       return this.createToken(result);
     } else {

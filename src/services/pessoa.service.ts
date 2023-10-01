@@ -11,7 +11,7 @@ import { Pessoa } from '../entities/pessoa.entity';
 export class PessoaService {
   constructor(private readonly pessoarepository: PessoaRepository) {}
 
-  async create(createPessoaDto: CreatePessoaDto) {
+  async create(createPessoaDto: CreatePessoaDto): Promise<any> {
     createPessoaDto.senha = await bcrypt.hash(
       createPessoaDto.senha,
       await bcrypt.genSalt(),

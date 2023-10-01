@@ -34,13 +34,36 @@ export class PessoaRepository {
   }
 
   public async create(pessoa: Pessoa): Promise<any> {
-    pessoa.id = (await this._collectionRef.count().get()).data().count + 1;
-    return this._collectionRef.add(pessoa);
+    const usuario = this._collectionRef.where('email', '==', pessoa.email);
+    const usuarioTelefone = this._collectionRef.where(
+      'telefone',
+      '==',
+      pessoa.telefone,
+    );
+    let usuarioExiste: boolean;
+
+    await usuario.get().then((u) => {
+      usuarioExiste = !u.empty;
+    });
+
+    if (!usuarioExiste) {
+      await usuarioTelefone.get().then((u) => {
+        usuarioExiste = !u.empty;
+      });
+    }
+
+    if (usuarioExiste != undefined && usuarioExiste) {
+      throw new UnauthorizedException('Email ja cadastrado.');
+    } else {
+      pessoa.id = (await this._collectionRef.count().get()).data().count + 1;
+      return this._collectionRef.add(pessoa);
+    }
   }
 
-  public async update(id: number, pessoa: any) {
+  public async update(userId: number, pessoa: any) {
     try {
-      const usuario = this._collectionRef.where('id', '==', id);
+      const usuario = this._collectionRef.where('id', '==', userId);
+
       await usuario.get().then((u) => {
         u.forEach((u) => {
           this._collectionRef.doc(u.id).update(pessoa);

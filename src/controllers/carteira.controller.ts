@@ -8,7 +8,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CarteiraService } from '../services/carteira.service';
@@ -16,6 +15,7 @@ import { CreateCarteiraDto } from '../dto/carteira/create-carteira.dto';
 import { Role } from '../enum/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from '../guard/role.guard';
+import { User } from 'src/decorators/user.decorator';
 
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin)
@@ -27,8 +27,8 @@ export class CarteiraController {
 
   @Roles(Role.User)
   @Post()
-  async create(@Body() createCarteiraDto: CreateCarteiraDto, @Req() req) {
-    return this.carteiraService.create(createCarteiraDto, Number(req.user.id));
+  async create(@Body() createCarteiraDto: CreateCarteiraDto, @User() user) {
+    return this.carteiraService.create(createCarteiraDto, Number(user.id));
   }
 
   // @Get()
@@ -39,8 +39,8 @@ export class CarteiraController {
   @Roles(Role.User)
   @Get('user')
   @Get()
-  async findAllByUser(@Req() req) {
-    return this.carteiraService.findAllByUser(Number(req.user.id));
+  async findAllByUser(@User() user) {
+    return this.carteiraService.findAllByUser(Number(user.id));
   }
 
   @Get(':id')
@@ -48,12 +48,10 @@ export class CarteiraController {
     return this.carteiraService.findOne(id);
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCarteiraDto: UpdateCarteiraDto,
-  ) {
-    return this.carteiraService.update(id, updateCarteiraDto);
+  @Roles(Role.User)
+  @Patch()
+  async update(@User() user, @Body() updateCarteiraDto: UpdateCarteiraDto) {
+    return this.carteiraService.update(Number(user.id), updateCarteiraDto);
   }
 
   @Delete(':id')

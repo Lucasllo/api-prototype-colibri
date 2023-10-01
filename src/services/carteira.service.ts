@@ -8,9 +8,8 @@ import * as firebase from 'firebase-admin';
 export class CarteiraService {
   constructor(private readonly carteiraRepository: CarteiraRepository) {}
 
-  async create(createCarteiraDto: CreateCarteiraDto, userId) {
-    const carteira = { ...createCarteiraDto, pessoaId: userId };
-    return this.carteiraRepository.create(carteira);
+  async create(createCarteiraDto: CreateCarteiraDto, userId: number) {
+    return this.carteiraRepository.create(createCarteiraDto, userId);
   }
 
   async findAll() {
@@ -28,7 +27,7 @@ export class CarteiraService {
     return this.carteiraRepository.getUser(id);
   }
 
-  async update(id: string, updateCarteiraDto: UpdateCarteiraDto) {
+  async update(id: number, updateCarteiraDto: UpdateCarteiraDto) {
     return this.carteiraRepository.update(id, updateCarteiraDto);
   }
 
