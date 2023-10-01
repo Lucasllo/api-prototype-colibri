@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FileService } from '../repositorys/file.service';
+import { FileService } from '../services/file.service';
 import {
   FileFieldsInterceptor,
   FileInterceptor,
