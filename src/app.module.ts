@@ -1,16 +1,16 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { PessoaModule } from './pessoa/pessoa.module';
-import { CorridaModule } from './corrida/corrida.module';
-import { CarteiraModule } from './carteira/carteira.module';
-import { MensagemModule } from './mensagem/mensagem.module';
+import { PessoaModule } from './modules/pessoa.module';
+import { CorridaModule } from './modules/corrida.module';
+import { CarteiraModule } from './modules/carteira.module';
+import { MensagemModule } from './modules/mensagem.module';
 import { UserIdCheckMiddleware } from './middlewares/user-id-check.middleware';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthGuard } from './guard/auth.guard';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './services/auth.service';
 import { ConfigModule } from '@nestjs/config';
-import { FileModule } from './file/file.module';
+import { FileModule } from './modules/file.module';
 
 @Module({
   imports: [
