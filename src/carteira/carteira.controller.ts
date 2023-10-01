@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CarteiraService } from './carteira.service';
@@ -24,14 +25,22 @@ import { RoleGuard } from '../guard/role.guard';
 export class CarteiraController {
   constructor(private readonly carteiraService: CarteiraService) {}
 
+  @Roles(Role.User)
   @Post()
-  async create(@Body() createCarteiraDto: CreateCarteiraDto) {
-    return this.carteiraService.create(createCarteiraDto);
+  async create(@Body() createCarteiraDto: CreateCarteiraDto, @Req() req) {
+    return this.carteiraService.create(createCarteiraDto, Number(req.user.id));
   }
 
+  // @Get()
+  // async findAll() {
+  //   return this.carteiraService.findAll();
+  // }
+
+  @Roles(Role.User)
+  @Get('user')
   @Get()
-  async findAll() {
-    return this.carteiraService.findAll();
+  async findAllByUser(@Req() req) {
+    return this.carteiraService.findAllByUser(Number(req.user.id));
   }
 
   @Get(':id')

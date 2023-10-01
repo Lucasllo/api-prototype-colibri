@@ -35,7 +35,6 @@ export class CorridaController {
 
   @Roles(Role.User)
   @Get('user')
-  @Get()
   async findAllByUser(@Req() req) {
     return this.corridaService.findAllByUser(Number(req.user.id));
   }

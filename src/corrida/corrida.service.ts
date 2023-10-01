@@ -8,11 +8,11 @@ import * as firebase from 'firebase-admin';
 export class CorridaService {
   constructor(private readonly corridaRepository: CorridaRepository) {}
 
-  create(createCorridaDto: CreateCorridaDto, userId: number) {
+  async create(createCorridaDto: CreateCorridaDto, userId: number) {
     return this.corridaRepository.create(createCorridaDto, userId);
   }
 
-  findAll() {
+  async findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
       this.corridaRepository.getAll();
     lista.then((corrida) =>
@@ -25,7 +25,7 @@ export class CorridaService {
     return lista;
   }
 
-  findAllByUser(userId: number) {
+  async findAllByUser(userId: number) {
     const lista: Promise<firebase.firestore.DocumentData[]> =
       this.corridaRepository.findAllByUser(userId);
     lista.then((corrida) =>
@@ -38,15 +38,15 @@ export class CorridaService {
     return lista;
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     return this.corridaRepository.getUser(id);
   }
 
-  update(id: string, updateCorridaDto: UpdateCorridaDto) {
+  async update(id: string, updateCorridaDto: UpdateCorridaDto) {
     return this.corridaRepository.update(id, updateCorridaDto);
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     const desativa = { ativo: false };
     return this.corridaRepository.remove(id, desativa);
   }
