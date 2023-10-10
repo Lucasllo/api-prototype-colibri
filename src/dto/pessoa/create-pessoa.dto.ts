@@ -3,6 +3,13 @@ import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreatePessoaDto {
   @ApiProperty({
+    example: 'joao',
+    description: 'Nome do cliente',
+  })
+  @IsString()
+  nome: string;
+
+  @ApiProperty({
     example: 'joao@mail.com',
     description: 'Email do cliente',
   })
