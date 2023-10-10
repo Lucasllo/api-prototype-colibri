@@ -62,7 +62,7 @@ export class AuthRepository {
       });
     });
 
-    if (result != null) {
+    if (result == null) {
       const usuario = this._collectionRef
         .where('telefone', '==', login)
         .where('ativo', '==', true);

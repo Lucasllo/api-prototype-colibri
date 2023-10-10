@@ -53,7 +53,7 @@ export class PessoaRepository {
     }
 
     if (usuarioExiste != undefined && usuarioExiste) {
-      throw new UnauthorizedException('Email ja cadastrado.');
+      throw new UnauthorizedException('Email/Telefone ja cadastrado.');
     } else {
       pessoa.id = (await this._collectionRef.count().get()).data().count + 1;
       return this._collectionRef.add(pessoa);

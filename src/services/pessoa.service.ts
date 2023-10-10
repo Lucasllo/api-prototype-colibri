@@ -19,7 +19,6 @@ export class PessoaService {
 
     const pessoa: Pessoa = {
       id: null,
-      nome: '',
       ...createPessoaDto,
       ativo: true,
       role: 1,

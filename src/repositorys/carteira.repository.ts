@@ -49,7 +49,10 @@ export class CarteiraRepository {
 
       if (pessoaRef != null) {
         return (
-          await this._collectionRef.where('pessoa', '==', pessoaRef).get()
+          await this._collectionRef
+            .where('pessoa', '==', pessoaRef)
+            .where('ativo', '==', true)
+            .get()
         ).docs.map((doc) => doc.data());
       } else {
         throw new BadRequestException('Pessoa não encontrado');
@@ -71,7 +74,7 @@ export class CarteiraRepository {
         });
       });
       if (pessoaRef != null) {
-        carteira = { ...carteira, pessoa: pessoaRef };
+        carteira = { ...carteira, pessoa: pessoaRef, ativo: true };
 
         return this._collectionRef.add(carteira);
       } else {
@@ -100,6 +103,7 @@ export class CarteiraRepository {
         .then(async (pRef) => {
           await this._collectionRef
             .where('pessoa', '==', pRef)
+            .where('ativo', '==', true)
             .get()
             .then((c) => {
               c.forEach((c) => {
