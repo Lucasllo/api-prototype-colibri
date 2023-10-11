@@ -115,7 +115,7 @@ export class CarteiraRepository {
       if (pessoaRef != null) {
         return this._collectionRef.doc(carteiraRef.id).update(carteira);
       } else {
-        throw new BadRequestException('Pessoa não encontrado');
+        throw new BadRequestException('Pessoa não encontrada');
       }
     } catch (error) {
       console.log(error);
