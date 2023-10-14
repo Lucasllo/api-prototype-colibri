@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthRepository {
   private issuer = 'login';
   private audience = 'user';
-  private _collectionRef: FirebaseFirestore.CollectionReference = firebase
+  private collectionPessoaRef: FirebaseFirestore.CollectionReference = firebase
     .firestore()
     .collection('pessoa');
 
@@ -53,7 +53,7 @@ export class AuthRepository {
     senha,
   }: LoginAuthDto): Promise<{ token: string }> {
     let result = null;
-    const usuario = this._collectionRef
+    const usuario = this.collectionPessoaRef
       .where('email', '==', login)
       .where('ativo', '==', true);
     await usuario.get().then((u) => {
@@ -63,7 +63,7 @@ export class AuthRepository {
     });
 
     if (result == null) {
-      const usuario = this._collectionRef
+      const usuario = this.collectionPessoaRef
         .where('telefone', '==', login)
         .where('ativo', '==', true);
       await usuario.get().then((u) => {

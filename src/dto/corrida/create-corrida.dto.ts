@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
+import { EnderecoDto } from '../endereco/endereco.dto';
 
 export class CreateCorridaDto {
   @ApiProperty({
@@ -10,18 +11,20 @@ export class CreateCorridaDto {
   data: string;
 
   @ApiProperty({
-    example: 'Rua x',
-    description: 'Local inicial da corrida',
+    example:
+      '{"logradouro": "Rua x", "numero": "123", "bairro": "Centro", "cep":"60987654", "cidade":"Fortaleza"}',
+    description: 'Endereço do local inicio da corrida',
   })
-  @IsString()
-  localInicial: string;
+  @IsObject()
+  localInicial: EnderecoDto;
 
   @ApiProperty({
-    example: 'Rua x',
-    description: 'Local final da corrida',
+    example:
+      '{"logradouro": "Rua x", "numero": "123", "bairro": "Centro", "cep":"60987654", "cidade":"Fortaleza"}',
+    description: 'Endereço do local final da corrida',
   })
-  @IsString()
-  localFinal: string;
+  @IsObject()
+  localFinal: EnderecoDto;
 
   @ApiProperty({
     example: '12:04:00',

@@ -9,6 +9,10 @@ export class CarteiraService {
   constructor(private readonly carteiraRepository: CarteiraRepository) {}
 
   async create(createCarteiraDto: CreateCarteiraDto, userId: number) {
+    createCarteiraDto = {
+      ...createCarteiraDto,
+      endereco: JSON.parse(JSON.stringify(createCarteiraDto.endereco)),
+    };
     return this.carteiraRepository.create(createCarteiraDto, userId);
   }
 
@@ -23,9 +27,9 @@ export class CarteiraService {
     return lista;
   }
 
-  async findOne(id: string) {
-    return this.carteiraRepository.getUser(id);
-  }
+  // async findqOne(id: string) {
+  //   return this.carteiraRepository.getCarteira(id);
+  // }
 
   async update(id: number, updateCarteiraDto: UpdateCarteiraDto) {
     return this.carteiraRepository.update(id, updateCarteiraDto);

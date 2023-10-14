@@ -17,6 +17,7 @@ import { Role } from '../enum/role.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/decorators/public.decorator';
 import { User } from 'src/decorators/user.decorator';
+import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -44,16 +45,20 @@ export class PessoaController {
   @ApiBearerAuth('access-token')
   @Patch()
   async update(@User() user, @Body() updatePessoaDto: UpdatePessoaDto) {
-    return this.pessoaService.update(Number(user.id), updatePessoaDto);
+    return this.pessoaService.updateDados(Number(user.id), updatePessoaDto);
   }
 
+  @Roles(Role.Admin)
   @ApiBearerAuth('access-token')
   @Patch('veiculo/:idUser')
   async updateVeiculo(
-    @Param() idUser,
-    @Body() updatePessoaDto: UpdatePessoaDto,
+    @Param('idUser') idUser: string,
+    @Body() updateVeiculoPessoaDto: VeiculoPessoaDto,
   ) {
-    return this.pessoaService.update(Number(idUser), updatePessoaDto);
+    return this.pessoaService.updateVeiculo(
+      Number(idUser),
+      updateVeiculoPessoaDto,
+    );
   }
 
   @ApiBearerAuth('access-token')

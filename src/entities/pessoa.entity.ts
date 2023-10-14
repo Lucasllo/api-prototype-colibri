@@ -1,3 +1,5 @@
+import { Veiculo } from './veiculo.entity';
+
 export class Pessoa {
   id: number;
 
@@ -13,7 +15,7 @@ export class Pessoa {
 
   termos: boolean;
 
-  veiculo: string;
+  veiculo: Veiculo;
 
   CNH: string;
 

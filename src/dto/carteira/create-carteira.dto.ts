@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsObject, IsString } from 'class-validator';
+import { EnderecoDto } from '../endereco/endereco.dto';
 
 export class CreateCarteiraDto {
   @ApiProperty({
@@ -10,25 +11,12 @@ export class CreateCarteiraDto {
   titular: string;
 
   @ApiProperty({
-    example: 'Rua x',
+    example:
+      '{"logradouro": "Rua x", "numero": "123", "bairro": "Centro", "cep":"60987654", "cidade":"Fortaleza"}',
     description: 'Rua onde o titular vive',
   })
-  @IsString()
-  endereco: string;
-
-  @ApiProperty({
-    example: 'FORTALEZA',
-    description: 'cidade onde titular vive',
-  })
-  @IsString()
-  cidade: string;
-
-  @ApiProperty({
-    example: '60743720',
-    description: 'Cep do endereço informado',
-  })
-  @IsString()
-  cep: string;
+  @IsObject()
+  endereco: EnderecoDto;
 
   @ApiProperty({
     example: '01-12-2023',

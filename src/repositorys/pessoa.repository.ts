@@ -8,13 +8,13 @@ import { Pessoa } from '../entities/pessoa.entity';
 
 @Injectable()
 export class PessoaRepository {
-  private _collectionRef: FirebaseFirestore.CollectionReference = firebase
+  private collectionPessoaRef: FirebaseFirestore.CollectionReference = firebase
     .firestore()
     .collection('pessoa');
 
   public async getUser(id: number): Promise<any> {
     let result = null;
-    const usuario = this._collectionRef.where('id', '==', id);
+    const usuario = this.collectionPessoaRef.where('id', '==', id);
 
     await usuario.get().then((u) => {
       u.forEach((u) => {
@@ -30,16 +30,19 @@ export class PessoaRepository {
   }
 
   public async getAll(): Promise<firebase.firestore.DocumentData[]> {
-    return (await this._collectionRef.get()).docs.map((doc) => doc.data());
+    return (await this.collectionPessoaRef.get()).docs.map((doc) => doc.data());
   }
 
   public async create(pessoa: Pessoa): Promise<any> {
-    const usuario = this._collectionRef.where('email', '==', pessoa.email);
-    const usuarioTelefone = this._collectionRef.where(
+    const usuario = this.collectionPessoaRef.where('email', '==', pessoa.email);
+    const usuarioTelefone = this.collectionPessoaRef.where(
       'telefone',
       '==',
       pessoa.telefone,
     );
+
+    const usuarioCPF = this.collectionPessoaRef.where('cpf', '==', pessoa.cpf);
+
     let usuarioExiste: boolean;
 
     await usuario.get().then((u) => {
@@ -52,38 +55,45 @@ export class PessoaRepository {
       });
     }
 
+    if (!usuarioExiste) {
+      await usuarioCPF.get().then((u) => {
+        usuarioExiste = !u.empty;
+      });
+    }
+
     if (usuarioExiste != undefined && usuarioExiste) {
-      throw new UnauthorizedException('Email/Telefone ja cadastrado.');
+      throw new UnauthorizedException('Email/Telefone/CPF ja cadastrado.');
     } else {
-      pessoa.id = (await this._collectionRef.count().get()).data().count + 1;
-      return this._collectionRef.add(pessoa);
+      pessoa.id =
+        (await this.collectionPessoaRef.count().get()).data().count + 1;
+      return this.collectionPessoaRef.add(pessoa);
     }
   }
 
   public async update(userId: number, pessoa: any) {
     try {
-      const usuario = this._collectionRef.where('id', '==', userId);
+      const usuario = this.collectionPessoaRef.where('id', '==', userId);
 
       await usuario.get().then((u) => {
         u.forEach((u) => {
-          this._collectionRef.doc(u.id).update(pessoa);
+          this.collectionPessoaRef.doc(u.id).update(pessoa);
         });
       });
     } catch (error) {
-      throw new BadRequestException('Erro ao fazer update');
+      throw new BadRequestException(error.message);
     }
   }
 
   public async remove(id: string, pessoa: any) {
     try {
-      const usuario = this._collectionRef.where('id', '==', id);
+      const usuario = this.collectionPessoaRef.where('id', '==', id);
       await usuario.get().then((u) => {
         u.forEach((u) => {
-          this._collectionRef.doc(u.id).update(pessoa);
+          this.collectionPessoaRef.doc(u.id).update(pessoa);
         });
       });
     } catch (error) {
-      throw new BadRequestException('Erro ao excluir conta');
+      throw new BadRequestException(error.message);
     }
   }
 }

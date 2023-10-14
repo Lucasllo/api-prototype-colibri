@@ -2,12 +2,12 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import * as firebase from 'firebase-admin';
 @Injectable()
 export class CorridaRepository {
-  private _collectionRef: FirebaseFirestore.CollectionReference = firebase
+  private collectionCorridaRef: FirebaseFirestore.CollectionReference = firebase
     .firestore()
     .collection('corrida');
 
   public async getUser(id: string): Promise<any> {
-    return this._collectionRef
+    return this.collectionCorridaRef
       .doc(id)
       .get()
       .then((doc) => {
@@ -22,12 +22,14 @@ export class CorridaRepository {
         }
       })
       .catch((error) => {
-        throw new BadRequestException(error);
+        throw new BadRequestException(error.message);
       });
   }
 
   public async getAll(): Promise<firebase.firestore.DocumentData[]> {
-    return (await this._collectionRef.get()).docs.map((doc) => doc.data());
+    return (await this.collectionCorridaRef.get()).docs.map((doc) =>
+      doc.data(),
+    );
   }
 
   public async findAllByUser(
@@ -49,13 +51,13 @@ export class CorridaRepository {
 
       if (pessoaRef != null) {
         return (
-          await this._collectionRef.where('pessoa', '==', pessoaRef).get()
+          await this.collectionCorridaRef.where('pessoa', '==', pessoaRef).get()
         ).docs.map((doc) => doc.data());
       } else {
         throw new BadRequestException('Pessoa não encontrado');
       }
     } catch (e) {
-      throw new BadRequestException('Erro ao recuperar mensagem');
+      throw new BadRequestException(e.message);
     }
   }
 
@@ -73,20 +75,20 @@ export class CorridaRepository {
       if (pessoaRef != null) {
         corrida = { ...corrida, pessoa: pessoaRef };
 
-        return this._collectionRef.add(corrida);
+        return this.collectionCorridaRef.add(corrida);
       } else {
         throw new BadRequestException('Pessoa não encontrado');
       }
     } catch (error) {
-      throw new BadRequestException('Erro ao salvar corrida');
+      throw new BadRequestException(error.message);
     }
   }
 
   public async update(id: string, corrida: any) {
-    return this._collectionRef.doc(id).update(corrida);
+    return this.collectionCorridaRef.doc(id).update(corrida);
   }
 
   public async remove(id: string, corrida: any) {
-    return this._collectionRef.doc(id).update(corrida);
+    return this.collectionCorridaRef.doc(id).update(corrida);
   }
 }

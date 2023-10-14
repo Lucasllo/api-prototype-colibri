@@ -2,12 +2,11 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import * as firebase from 'firebase-admin';
 @Injectable()
 export class MensagemRepository {
-  private _collectionRef: FirebaseFirestore.CollectionReference = firebase
-    .firestore()
-    .collection('mensagem');
+  private collectionMensagemRef: FirebaseFirestore.CollectionReference =
+    firebase.firestore().collection('mensagem');
 
   public async getMensagem(id: string): Promise<any> {
-    return this._collectionRef
+    return this.collectionMensagemRef
       .doc(id)
       .get()
       .then((doc) => {
@@ -20,12 +19,14 @@ export class MensagemRepository {
         }
       })
       .catch((error) => {
-        throw new BadRequestException(error);
+        throw new BadRequestException(error.message);
       });
   }
 
   public async getAll(): Promise<firebase.firestore.DocumentData[]> {
-    return (await this._collectionRef.get()).docs.map((doc) => doc.data());
+    return (await this.collectionMensagemRef.get()).docs.map((doc) =>
+      doc.data(),
+    );
   }
 
   public async getAllByUser(
@@ -47,13 +48,15 @@ export class MensagemRepository {
 
       if (pessoaRef != null) {
         return (
-          await this._collectionRef.where('pessoa', '==', pessoaRef).get()
+          await this.collectionMensagemRef
+            .where('pessoa', '==', pessoaRef)
+            .get()
         ).docs.map((doc) => doc.data());
       } else {
         throw new BadRequestException('Pessoa não encontrado');
       }
     } catch (e) {
-      throw new BadRequestException('Erro ao recuperar mensagem');
+      throw new BadRequestException(e.message);
     }
   }
 
@@ -71,20 +74,20 @@ export class MensagemRepository {
       if (pessoaRef != null) {
         mensagem = { ...mensagem, pessoa: pessoaRef };
 
-        return this._collectionRef.add(mensagem);
+        return this.collectionMensagemRef.add(mensagem);
       } else {
         throw new BadRequestException('Pessoa não encontrado');
       }
     } catch (error) {
-      throw new BadRequestException('Erro ao salvar mensagem');
+      throw new BadRequestException(error.message);
     }
   }
 
   public async update(id: string, mensagem: any) {
-    return this._collectionRef.doc(id).update(mensagem);
+    return this.collectionMensagemRef.doc(id).update(mensagem);
   }
 
   public async remove(id: string, mensagem: any) {
-    return this._collectionRef.doc(id).update(mensagem);
+    return this.collectionMensagemRef.doc(id).update(mensagem);
   }
 }

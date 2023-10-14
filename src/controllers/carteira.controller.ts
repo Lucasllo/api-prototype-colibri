@@ -43,10 +43,10 @@ export class CarteiraController {
     return this.carteiraService.findAllByUser(Number(user.id));
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.carteiraService.findOne(id);
-  }
+  // @Get(':id')
+  // async findOne(@Param('id') id: string) {
+  //   return this.carteiraService.findOne(id);
+  // }
 
   @Roles(Role.User)
   @Patch()

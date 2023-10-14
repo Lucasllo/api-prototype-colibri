@@ -1,7 +1,9 @@
+import { Endereco } from './endereco.entity';
+
 export class Carteira {
   titular: string;
 
-  endereco: string;
+  endereco: Endereco;
 
   cidade: string;
 

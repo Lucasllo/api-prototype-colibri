@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
-export class CreatePessoaDto {
+export class VeiculoPessoaDto {
   @ApiProperty({
     example: 'Honda',
     description: 'Marca do veiculo',
@@ -13,7 +13,7 @@ export class CreatePessoaDto {
     example: '165ASXS',
     description: 'Placa do veiculo',
   })
-  @IsEmail()
+  @IsString()
   placa: string;
 
   @ApiProperty({
