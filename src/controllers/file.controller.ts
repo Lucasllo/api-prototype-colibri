@@ -21,6 +21,7 @@ import { User } from 'src/decorators/user.decorator';
 import { Role } from 'src/enum/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 
+@Roles(Role.User, Role.Admin)
 @ApiTags('file')
 @ApiBearerAuth('access-token')
 @Controller('file')
@@ -90,19 +91,20 @@ export class FileController {
     }
   }
 
+  @Roles(Role.Admin)
   @Header('Content-Type', 'image/jpeg')
   @Get('fotoCLRV/:idUser')
   async getFotoCLRV(@Param('idUser') idUser: string) {
     return this.fileService.getFotoCLRV(idUser);
   }
 
+  @Roles(Role.Admin)
   @Header('Content-Type', 'image/jpeg')
   @Get('fotoCNH/:idUser')
   async getFotoCNH(@Param('idUser') idUser: string) {
     return this.fileService.getFotoCNH(idUser);
   }
 
-  @Roles(Role.Admin, Role.User)
   @Header('Content-Type', 'image/jpeg')
   @Get('fotoPerfil')
   async getFotoPerfil(@User() user) {
