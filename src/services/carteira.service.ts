@@ -31,8 +31,8 @@ export class CarteiraService {
     return this.carteiraRepository.update(id, updateCarteiraDto);
   }
 
-  async remove(id: string) {
+  async remove(userId: number) {
     const desativa = { ativo: false };
-    return this.carteiraRepository.remove(id, desativa);
+    return this.carteiraRepository.remove(userId, desativa);
   }
 }

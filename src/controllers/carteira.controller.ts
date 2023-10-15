@@ -16,6 +16,7 @@ import { Role } from '../enum/role.enum';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from '../guard/role.guard';
 import { User } from 'src/decorators/user.decorator';
+import { Pessoa } from 'src/entities/pessoa.entity';
 
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin)
@@ -27,25 +28,31 @@ export class CarteiraController {
 
   @Roles(Role.User)
   @Post()
-  async create(@Body() createCarteiraDto: CreateCarteiraDto, @User() user) {
-    return this.carteiraService.create(createCarteiraDto, Number(user.id));
+  async create(
+    @Body() createCarteiraDto: CreateCarteiraDto,
+    @User() user: Pessoa,
+  ) {
+    return this.carteiraService.create(createCarteiraDto, user.id);
   }
 
   @Roles(Role.User)
   @Get('user')
   @Get()
-  async findAllByUser(@User() user) {
-    return this.carteiraService.findAllByUser(Number(user.id));
+  async findAllByUser(@User() user: Pessoa) {
+    return this.carteiraService.findAllByUser(user.id);
   }
 
   @Roles(Role.User)
   @Patch()
-  async update(@User() user, @Body() updateCarteiraDto: UpdateCarteiraDto) {
-    return this.carteiraService.update(Number(user.id), updateCarteiraDto);
+  async update(
+    @User() user: Pessoa,
+    @Body() updateCarteiraDto: UpdateCarteiraDto,
+  ) {
+    return this.carteiraService.update(user.id, updateCarteiraDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.carteiraService.remove(id);
+  @Delete(':idUser')
+  async remove(@Param('idUser') userId: string) {
+    return this.carteiraService.remove(Number(userId));
   }
 }

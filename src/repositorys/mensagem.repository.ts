@@ -83,11 +83,41 @@ export class MensagemRepository {
     }
   }
 
-  public async update(id: string, mensagem: any) {
-    return this.collectionMensagemRef.doc(id).update(mensagem);
+  public async update(userId: number, mensagem: any) {
+    if (Number.isNaN(userId)) {
+      throw new BadRequestException('Pessoa não encontrado');
+    }
+    let pessoaRef = null;
+    const collectionPessoaRef = firebase.firestore().collection('pessoa');
+    const usuario = collectionPessoaRef.where('id', '==', userId);
+
+    try {
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          pessoaRef = collectionPessoaRef.doc(u.id);
+        });
+      });
+
+      if (pessoaRef != null) {
+        return await this.collectionMensagemRef
+          .where('pessoa', '==', pessoaRef)
+          .get()
+          .then((u) => {
+            u.forEach(async (u) => {
+              pessoaRef = await this.collectionMensagemRef
+                .doc(u.id)
+                .update(mensagem);
+            });
+          });
+      } else {
+        throw new BadRequestException('Pessoa não encontrado');
+      }
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
-  public async remove(id: string, mensagem: any) {
-    return this.collectionMensagemRef.doc(id).update(mensagem);
+  public async remove(id: number, mensagem: any) {
+    return this.update(id, mensagem); // verificar a necessidade da propriedade "ativo" na mensagem
   }
 }

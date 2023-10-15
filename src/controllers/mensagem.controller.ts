@@ -43,21 +43,16 @@ export class MensagemController {
     return this.mensagemService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.mensagemService.findOne(id);
-  }
-
-  @Patch(':id')
+  @Patch(':idUser')
   async update(
-    @Param('id') id: string,
+    @Param('idUser') id: string,
     @Body() updateMensagemDto: UpdateMensagemDto,
   ) {
-    return this.mensagemService.update(id, updateMensagemDto);
+    return this.mensagemService.update(Number(id), updateMensagemDto);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.mensagemService.remove(id);
+  @Delete(':idUser')
+  async remove(@Param('idUser') id: string) {
+    return this.mensagemService.remove(Number(id));
   }
 }

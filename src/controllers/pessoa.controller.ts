@@ -18,6 +18,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/decorators/public.decorator';
 import { User } from 'src/decorators/user.decorator';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
+import { Pessoa } from 'src/entities/pessoa.entity';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -33,14 +34,14 @@ export class PessoaController {
 
   @ApiBearerAuth('access-token')
   @Get()
-  async findOne(@User() user) {
+  async findOne(@User() user: Pessoa) {
     return this.pessoaService.getUser(user);
   }
 
   @ApiBearerAuth('access-token')
   @Patch()
-  async update(@User() user, @Body() updatePessoaDto: UpdatePessoaDto) {
-    return this.pessoaService.updateDados(Number(user.id), updatePessoaDto);
+  async update(@User() user: Pessoa, @Body() updatePessoaDto: UpdatePessoaDto) {
+    return this.pessoaService.updateDados(user.id, updatePessoaDto);
   }
 
   @Roles(Role.Admin)
@@ -58,7 +59,7 @@ export class PessoaController {
 
   @ApiBearerAuth('access-token')
   @Delete()
-  async remove(@User() user) {
+  async remove(@User() user: Pessoa) {
     return this.pessoaService.remove(user.id);
   }
 }

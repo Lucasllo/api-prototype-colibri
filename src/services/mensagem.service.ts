@@ -38,11 +38,11 @@ export class MensagemService {
     return this.mensagemRepository.getMensagem(id);
   }
 
-  update(id: string, updateMensagemDto: UpdateMensagemDto) {
+  update(id: number, updateMensagemDto: UpdateMensagemDto) {
     return this.mensagemRepository.update(id, updateMensagemDto);
   }
 
-  remove(id: string) {
+  remove(id: number) {
     const desativa = { ativo: false };
     return this.mensagemRepository.remove(id, desativa);
   }

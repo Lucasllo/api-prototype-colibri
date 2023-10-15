@@ -121,7 +121,36 @@ export class CarteiraRepository {
     }
   }
 
-  public async remove(id: string, carteira: any) {
-    return this.collectionCarteiraRef.doc(id).update(carteira);
+  public async remove(userId: number, carteira: any) {
+    if (Number.isNaN(userId)) {
+      throw new BadRequestException('Pessoa não encontrado');
+    }
+    let pessoaRef = null;
+    const collectionPessoaRef = firebase.firestore().collection('pessoa');
+    const usuario = collectionPessoaRef.where('id', '==', userId);
+
+    try {
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          pessoaRef = collectionPessoaRef.doc(u.id);
+        });
+      });
+
+      if (pessoaRef != null) {
+        return await this.collectionCarteiraRef
+          .where('pessoa', '==', pessoaRef)
+          .where('ativo', '==', true)
+          .get()
+          .then((c) => {
+            c.forEach(async (c) => {
+              await this.collectionCarteiraRef.doc(c.id).update(carteira);
+            });
+          });
+      } else {
+        throw new BadRequestException('Pessoa não encontrado');
+      }
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 }

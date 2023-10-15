@@ -84,7 +84,7 @@ export class PessoaRepository {
     }
   }
 
-  public async remove(id: string, pessoa: any) {
+  public async remove(id: number, pessoa: any) {
     try {
       const usuario = this.collectionPessoaRef.where('id', '==', id);
       await usuario.get().then((u) => {

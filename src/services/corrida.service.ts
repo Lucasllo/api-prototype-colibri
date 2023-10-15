@@ -39,15 +39,10 @@ export class CorridaService {
   }
 
   async findOne(id: string) {
-    return this.corridaRepository.getUser(id);
+    return this.corridaRepository.getCorrida(id);
   }
 
   async update(id: string, updateCorridaDto: UpdateCorridaDto) {
     return this.corridaRepository.update(id, updateCorridaDto);
-  }
-
-  async remove(id: string) {
-    const desativa = { ativo: false };
-    return this.corridaRepository.remove(id, desativa);
   }
 }

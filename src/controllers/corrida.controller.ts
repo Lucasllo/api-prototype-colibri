@@ -6,7 +6,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -42,21 +41,11 @@ export class CorridaController {
     return this.corridaService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.corridaService.findOne(id);
-  }
-
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateCorridaDto: UpdateCorridaDto,
   ) {
     return this.corridaService.update(id, updateCorridaDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.corridaService.remove(id);
   }
 }

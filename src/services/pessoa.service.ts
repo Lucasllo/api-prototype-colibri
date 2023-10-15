@@ -54,7 +54,7 @@ export class PessoaService {
     return this.pessoarepository.getUser(id);
   }
 
-  async getUser(user): Promise<GetPessoaDto> {
+  async getUser(user: Pessoa): Promise<GetPessoaDto> {
     const userDto: GetPessoaDto = {
       id: user.id,
       nome: user.nome,
@@ -87,7 +87,7 @@ export class PessoaService {
     return this.pessoarepository.update(id, updateImagemPessoa);
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     const desativa = { ativo: false };
 
     return this.pessoarepository.remove(id, desativa);

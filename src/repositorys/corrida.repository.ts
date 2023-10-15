@@ -6,7 +6,7 @@ export class CorridaRepository {
     .firestore()
     .collection('corrida');
 
-  public async getUser(id: string): Promise<any> {
+  public async getCorrida(id: string): Promise<any> {
     return this.collectionCorridaRef
       .doc(id)
       .get()
@@ -85,10 +85,6 @@ export class CorridaRepository {
   }
 
   public async update(id: string, corrida: any) {
-    return this.collectionCorridaRef.doc(id).update(corrida);
-  }
-
-  public async remove(id: string, corrida: any) {
     return this.collectionCorridaRef.doc(id).update(corrida);
   }
 }
