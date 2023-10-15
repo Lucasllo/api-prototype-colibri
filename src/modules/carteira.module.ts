@@ -6,5 +6,6 @@ import { CarteiraRepository } from '../repositorys/carteira.repository';
 @Module({
   controllers: [CarteiraController],
   providers: [CarteiraService, CarteiraRepository],
+  exports: [CarteiraService],
 })
 export class CarteiraModule {}

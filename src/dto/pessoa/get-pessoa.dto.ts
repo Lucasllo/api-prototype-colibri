@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNumber, IsObject, IsString } from 'class-validator';
 import { VeiculoPessoaDto } from './veiculo-pessoa.dto';
+import { CreateCarteiraDto } from '../carteira/create-carteira.dto';
 
 export class GetPessoaDto {
   @ApiProperty({
@@ -39,10 +40,16 @@ export class GetPessoaDto {
   cpf: string;
 
   @ApiProperty({
-    example:
-      "{cor: 'vermelho', marca: 'yamaha', placa: '98746219', renavam: '98765432199'}",
+    example: 'Estrutura do VeiculoPessoaDto',
     description: 'Veiculo do cliente',
   })
   @IsObject()
   veiculo: VeiculoPessoaDto;
+
+  @ApiProperty({
+    example: 'Estrutura do CreateCarteiraDto',
+    description: 'Carteira do cliente',
+  })
+  @IsObject()
+  carteira: CreateCarteiraDto;
 }

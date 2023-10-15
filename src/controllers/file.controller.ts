@@ -1,6 +1,9 @@
 import {
   BadRequestException,
   Controller,
+  Get,
+  Header,
+  Param,
   Post,
   Req,
   UploadedFile,
@@ -14,6 +17,9 @@ import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
+import { User } from 'src/decorators/user.decorator';
+import { Role } from 'src/enum/role.enum';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @ApiTags('file')
 @ApiBearerAuth('access-token')
@@ -82,5 +88,24 @@ export class FileController {
     } catch (error) {
       throw new BadRequestException('Erro com envio.');
     }
+  }
+
+  @Header('Content-Type', 'image/jpeg')
+  @Get('fotoCLRV/:idUser')
+  async getFotoCLRV(@Param('idUser') idUser: string) {
+    return this.fileService.getFotoCLRV(idUser);
+  }
+
+  @Header('Content-Type', 'image/jpeg')
+  @Get('fotoCNH/:idUser')
+  async getFotoCNH(@Param('idUser') idUser: string) {
+    return this.fileService.getFotoCNH(idUser);
+  }
+
+  @Roles(Role.Admin, Role.User)
+  @Header('Content-Type', 'image/jpeg')
+  @Get('fotoPerfil')
+  async getFotoPerfil(@User() user) {
+    return await this.fileService.getFotoPerfil(user);
   }
 }
