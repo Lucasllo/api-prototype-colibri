@@ -37,11 +37,6 @@ export class PessoaController {
     return this.pessoaService.getUser(user);
   }
 
-  // @Get(':id')
-  // async findOne(@Param('id') id: string) {
-  //   return this.pessoaService.findOne(Number(id));
-  // }
-
   @ApiBearerAuth('access-token')
   @Patch()
   async update(@User() user, @Body() updatePessoaDto: UpdatePessoaDto) {

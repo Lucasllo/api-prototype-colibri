@@ -5,26 +5,6 @@ export class CarteiraRepository {
   private collectionCarteiraRef: FirebaseFirestore.CollectionReference =
     firebase.firestore().collection('carteira');
 
-  // public async getCarteira(id: string): Promise<any> {
-  //   return this.collectionCarteiraRef
-  //     .doc(id)
-  //     .get()
-  //     .then((doc) => {
-  //       if (doc.exists) {
-  //         const carteira = doc.data();
-  //         if (carteira.data) {
-  //           carteira.data = new Date(carteira.data?.seconds * 1000);
-  //         }
-  //         return carteira;
-  //       } else {
-  //         throw new BadRequestException('Carteira não encontrada.');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       throw new BadRequestException(error);
-  //     });
-  // }
-
   public async getAll(): Promise<firebase.firestore.DocumentData[]> {
     return (await this.collectionCarteiraRef.get()).docs.map((doc) =>
       doc.data(),

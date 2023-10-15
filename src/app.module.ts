@@ -43,21 +43,6 @@ import { FileModule } from './modules/file.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(UserIdCheckMiddleware)
-      .forRoutes
-      // {
-      //   path: 'mensagens/:id',
-      //   method: RequestMethod.ALL,
-      // },
-      // {
-      //   path: 'corridas/:id',
-      //   method: RequestMethod.ALL,
-      // },
-      // {
-      //   path: 'carteira/:id',
-      //   method: RequestMethod.ALL,
-      // },
-      ();
+    consumer.apply(UserIdCheckMiddleware).forRoutes();
   }
 }

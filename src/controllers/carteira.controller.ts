@@ -31,22 +31,12 @@ export class CarteiraController {
     return this.carteiraService.create(createCarteiraDto, Number(user.id));
   }
 
-  // @Get()
-  // async findAll() {
-  //   return this.carteiraService.findAll();
-  // }
-
   @Roles(Role.User)
   @Get('user')
   @Get()
   async findAllByUser(@User() user) {
     return this.carteiraService.findAllByUser(Number(user.id));
   }
-
-  // @Get(':id')
-  // async findOne(@Param('id') id: string) {
-  //   return this.carteiraService.findOne(id);
-  // }
 
   @Roles(Role.User)
   @Patch()

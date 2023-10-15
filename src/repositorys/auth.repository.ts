@@ -30,7 +30,6 @@ export class AuthRepository {
           subject: String(pessoa.id),
           issuer: this.issuer,
           audience: this.audience,
-          // notBefore: -> só fica valido apos essa data;
         },
       ),
     };
