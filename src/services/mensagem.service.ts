@@ -17,6 +17,7 @@ export class MensagemService {
       this.mensagemRepository.getAll();
     lista.then((mensagem) =>
       mensagem.map((mensagem) => {
+        delete mensagem.pessoa;
         mensagem.data = new Date(mensagem.data?.seconds * 1000);
       }),
     );
@@ -28,6 +29,7 @@ export class MensagemService {
       this.mensagemRepository.getAllByUser(userId);
     lista.then((mensagem) =>
       mensagem.map((mensagem) => {
+        delete mensagem.pessoa;
         mensagem.data = new Date(mensagem.data?.seconds * 1000);
       }),
     );

@@ -17,6 +17,7 @@ export class CorridaService {
       this.corridaRepository.getAll();
     lista.then((corrida) =>
       corrida.map((corrida) => {
+        delete corrida.pessoa;
         corrida.data = new Date(corrida.data?.seconds * 1000);
         corrida.horaInicial = new Date(corrida.horaInicial?.seconds * 1000);
         corrida.horaFinal = new Date(corrida.horaFinal?.seconds * 1000);
@@ -30,6 +31,7 @@ export class CorridaService {
       this.corridaRepository.findAllByUser(userId);
     lista.then((corrida) =>
       corrida.map((corrida) => {
+        delete corrida.pessoa;
         corrida.data = new Date(corrida.data?.seconds * 1000);
         corrida.horaInicial = new Date(corrida.horaInicial?.seconds * 1000);
         corrida.horaFinal = new Date(corrida.horaFinal?.seconds * 1000);
