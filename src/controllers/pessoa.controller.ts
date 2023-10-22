@@ -19,6 +19,7 @@ import { Public } from 'src/decorators/public.decorator';
 import { User } from 'src/decorators/user.decorator';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 import { Pessoa } from 'src/entities/pessoa.entity';
+import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -61,5 +62,14 @@ export class PessoaController {
   @Delete()
   async remove(@User() user: Pessoa) {
     return this.pessoaService.remove(user.id);
+  }
+
+  @ApiBearerAuth('access-token')
+  @Post('mudaSenha')
+  mudaSenha(
+    @User() user: Pessoa,
+    @Body() changePasswordAuthDto: ChangePasswordAuthDto,
+  ) {
+    return this.pessoaService.updateSenha(user.id, changePasswordAuthDto);
   }
 }

@@ -35,6 +35,25 @@ export class AuthRepository {
     };
   }
 
+  async createTokenRecoverPassword(codigo, pessoa) {
+    return {
+      token: this.jwtService.sign(
+        {
+          codigo: codigo,
+        },
+        {
+          expiresIn: '1 day',
+          subject: JSON.stringify({
+            codigo: String(codigo),
+            usuario: String(pessoa.id),
+          }),
+          issuer: this.issuer,
+          audience: this.audience,
+        },
+      ),
+    };
+  }
+
   checkToken(token: string) {
     try {
       const data = this.jwtService.verify(token, {
@@ -74,6 +93,39 @@ export class AuthRepository {
 
     if (result != null && (await bcrypt.compare(senha, result.senha))) {
       return this.createToken(result);
+    } else {
+      throw new UnauthorizedException('Email e/ou senha incorretos.');
+    }
+  }
+
+  public async recoverPassword({ login }): Promise<{ token: string }> {
+    let result = null;
+    const usuario = this.collectionPessoaRef
+      .where('email', '==', login)
+      .where('ativo', '==', true);
+    await usuario.get().then((u) => {
+      u.forEach((u) => {
+        result = u.data();
+      });
+    });
+
+    if (result == null) {
+      const usuario = this.collectionPessoaRef
+        .where('telefone', '==', login)
+        .where('ativo', '==', true);
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          result = u.data();
+        });
+      });
+    }
+
+    if (result != null) {
+      const codigo = Math.floor(1000 + Math.random() * 9000);
+
+      // enviar codigo
+
+      return this.createTokenRecoverPassword(codigo, result);
     } else {
       throw new UnauthorizedException('Email e/ou senha incorretos.');
     }

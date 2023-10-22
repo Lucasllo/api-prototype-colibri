@@ -27,9 +27,18 @@ export class AuthGuard implements CanActivate {
     try {
       const token = this.extractTokenFromHeader(request);
       const data = this.authService.checkToken(token);
+      let recoverPassword = null;
 
       request.token = data;
-      request.user = await this.pessoaService.findOne(Number(data.sub));
+      recoverPassword = JSON.parse(data.sub);
+      if (recoverPassword.codigo != undefined) {
+        request.user = await this.pessoaService.findOne(
+          Number(recoverPassword.usuario),
+        );
+        request.codigo = recoverPassword.codigo;
+      } else {
+        request.user = await this.pessoaService.findOne(Number(data.sub));
+      }
       return true;
     } catch (error) {
       return false;

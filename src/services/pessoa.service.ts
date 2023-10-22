@@ -1,6 +1,6 @@
 import { UpdatePessoaDto } from './../dto/pessoa/update-pessoa.dto';
 import { GetPessoaDto } from './../dto/pessoa/get-pessoa.dto';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from '../dto/pessoa/create-pessoa.dto';
 import { PessoaRepository } from '../repositorys/pessoa.repository';
 import * as firebase from 'firebase-admin';
@@ -10,6 +10,7 @@ import { Veiculo } from 'src/entities/veiculo.entity';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 import { CarteiraService } from './carteira.service';
 import { CreateCarteiraDto } from 'src/dto/carteira/create-carteira.dto';
+import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
 
 @Injectable()
 export class PessoaService {
@@ -92,6 +93,18 @@ export class PessoaService {
     };
 
     return this.pessoarepository.update(id, updateVeiculoPessoa);
+  }
+
+  async updateSenha(id: number, changePasswordAuthDto: ChangePasswordAuthDto) {
+    if (changePasswordAuthDto.senha != changePasswordAuthDto.confirmaSenha) {
+      throw new BadRequestException('Senha invalida');
+    }
+
+    const updatePessoaDto = {
+      senha: changePasswordAuthDto.senha,
+    };
+
+    return this.pessoarepository.update(id, updatePessoaDto);
   }
 
   async updateImage(id: number, tipo: string, nome: string) {
