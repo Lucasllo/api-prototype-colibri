@@ -10,6 +10,7 @@ import { RecoverPasswordAuthDto } from 'src/dto/auth/recover-password -auth.dto'
 import { PasswordCode } from 'src/decorators/passwordCode.decorator';
 import { User } from 'src/decorators/user.decorator';
 import { Pessoa } from 'src/entities/pessoa.entity';
+import { CreatePessoaDto } from 'src/dto/pessoa/create-pessoa.dto';
 
 @Roles(Role.Admin)
 @UseGuards(RoleGuard)
@@ -28,6 +29,12 @@ export class AuthController {
   @Post('recuperaSenha')
   recuperaSenha(@Body() recoverPasswordAuthDto: RecoverPasswordAuthDto) {
     return this.authService.recuperaSenha(recoverPasswordAuthDto);
+  }
+
+  @Public()
+  @Post('create')
+  create(@Body() createPessoaDto: CreatePessoaDto) {
+    return this.authService.create(createPessoaDto);
   }
 
   @Roles(Role.Recover)
