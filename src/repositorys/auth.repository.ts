@@ -100,7 +100,6 @@ export class AuthRepository {
   }
 
   public async create(pessoa: Pessoa) {
-    let retorno = null;
     const usuario = this.collectionPessoaRef.where('email', '==', pessoa.email);
     const usuarioTelefone = this.collectionPessoaRef.where(
       'telefone',
@@ -133,11 +132,9 @@ export class AuthRepository {
     } else {
       pessoa.id =
         (await this.collectionPessoaRef.count().get()).data().count + 1;
-      (await this.collectionPessoaRef.add(pessoa)).get().then((u) => {
-        retorno = u.data();
-      });
+      await this.collectionPessoaRef.add(pessoa);
 
-      return this.createToken(retorno);
+      return this.createToken(pessoa);
     }
   }
 

@@ -17,7 +17,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
 import { User } from 'src/decorators/user.decorator';
 @ApiBearerAuth('access-token')
-@Roles(Role.Admin)
+@Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('mensagem')
 @Controller('mensagem')
