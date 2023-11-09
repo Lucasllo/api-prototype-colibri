@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
 
 export class CreatePessoaDto {
   @ApiProperty({
@@ -44,4 +49,12 @@ export class CreatePessoaDto {
   })
   @IsString()
   senha: string;
+
+  @ApiProperty({
+    example: 'true',
+    description:
+      'True caso escolha tipo de comissão mensalidade, caso falso é "comissão do app"',
+  })
+  @IsBoolean()
+  mensalidade: boolean;
 }

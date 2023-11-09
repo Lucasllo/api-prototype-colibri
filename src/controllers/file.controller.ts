@@ -42,6 +42,10 @@ export class FileController {
         name: 'foto_clrv',
         maxCount: 1,
       },
+      {
+        name: 'foto_antecedentes',
+        maxCount: 1,
+      },
     ]),
   )
   @Post('fotos')
@@ -52,6 +56,7 @@ export class FileController {
       foto_perfil: Express.Multer.File;
       foto_cnh: Express.Multer.File;
       foto_clrv: Express.Multer.File;
+      foto_antecedentes: Express.Multer.File;
     },
   ) {
     try {

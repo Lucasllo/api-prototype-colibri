@@ -5,7 +5,6 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   Delete,
   UseGuards,
 } from '@nestjs/common';
@@ -51,8 +50,9 @@ export class CarteiraController {
     return this.carteiraService.update(user.id, updateCarteiraDto);
   }
 
-  @Delete(':idUser')
-  async remove(@Param('idUser') userId: string) {
-    return this.carteiraService.remove(Number(userId));
+  @Roles(Role.User)
+  @Delete()
+  async remove(@User() user: Pessoa) {
+    return this.carteiraService.remove(Number(user.id));
   }
 }

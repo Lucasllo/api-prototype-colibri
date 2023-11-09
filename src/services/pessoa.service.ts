@@ -8,16 +8,11 @@ import * as bcrypt from 'bcrypt';
 import { Pessoa } from '../entities/pessoa.entity';
 import { Veiculo } from 'src/entities/veiculo.entity';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
-import { CarteiraService } from './carteira.service';
-import { CreateCarteiraDto } from 'src/dto/carteira/create-carteira.dto';
 import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
 
 @Injectable()
 export class PessoaService {
-  constructor(
-    private readonly pessoarepository: PessoaRepository,
-    private readonly carteiraService: CarteiraService,
-  ) {}
+  constructor(private readonly pessoarepository: PessoaRepository) {}
 
   async create(createPessoaDto: CreatePessoaDto): Promise<any> {
     createPessoaDto.senha = await bcrypt.hash(
@@ -35,6 +30,7 @@ export class PessoaService {
       termos: true,
       CHNImagem: '',
       CLRVImagem: '',
+      antecedentesImagem: '',
       perfilImagem: '',
       online: false,
       dataCadastro: new Date(),
@@ -61,15 +57,6 @@ export class PessoaService {
   }
 
   async getUser(user: Pessoa): Promise<GetPessoaDto> {
-    const carteiras = await this.carteiraService.findAllByUser(user.id);
-    let carteira = null;
-    if (carteiras.length > 0) {
-      carteira = carteiras[0];
-      delete carteira.pessoa;
-    } else {
-      carteira = new CreateCarteiraDto();
-    }
-
     const userDto: GetPessoaDto = {
       id: user.id,
       nome: user.nome,
@@ -77,7 +64,6 @@ export class PessoaService {
       email: user.email,
       telefone: user.telefone,
       veiculo: user.veiculo,
-      carteira: carteira as CreateCarteiraDto,
     };
 
     return userDto;

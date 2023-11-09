@@ -25,6 +25,8 @@ export class Pessoa {
 
   CLRVImagem: string;
 
+  antecedentesImagem: string;
+
   dataCadastro: Date;
 
   ativo: boolean;
