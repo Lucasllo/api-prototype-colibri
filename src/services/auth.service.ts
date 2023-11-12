@@ -6,6 +6,7 @@ import { CreatePessoaDto } from 'src/dto/pessoa/create-pessoa.dto';
 import { Veiculo } from 'src/entities/veiculo.entity';
 import { Pessoa } from 'src/entities/pessoa.entity';
 import * as bcrypt from 'bcrypt';
+import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,8 +41,10 @@ export class AuthService {
       CHNImagem: '',
       CLRVImagem: '',
       perfilImagem: '',
+      antecedentesImagem: '',
       online: false,
       dataCadastro: new Date(),
+      localizacao: new UpdateLocalizacaoPessoaDto(),
     };
 
     return this.authRepository.create(pessoa);
