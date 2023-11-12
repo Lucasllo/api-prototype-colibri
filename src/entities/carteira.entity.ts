@@ -5,10 +5,6 @@ export class Carteira {
 
   endereco: Endereco;
 
-  cidade: string;
-
-  cep: string;
-
   nascimento: Date;
 
   banco: string;
@@ -26,4 +22,8 @@ export class Carteira {
   tipoPagamento: string;
 
   pix: string;
+
+  saldo: number;
+
+  ativo: boolean;
 }

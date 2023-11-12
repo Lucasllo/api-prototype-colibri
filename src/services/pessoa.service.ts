@@ -9,6 +9,8 @@ import { Pessoa } from '../entities/pessoa.entity';
 import { Veiculo } from 'src/entities/veiculo.entity';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
+import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
+import { UpdateOnlinePessoaDto } from 'src/dto/pessoa/updateOnline-pessoa.dto';
 
 @Injectable()
 export class PessoaService {
@@ -34,6 +36,7 @@ export class PessoaService {
       perfilImagem: '',
       online: false,
       dataCadastro: new Date(),
+      localizacao: new UpdateLocalizacaoPessoaDto(),
     };
 
     return this.pessoarepository.create(pessoa);
@@ -73,6 +76,19 @@ export class PessoaService {
     return this.pessoarepository.update(id, updatePessoaDto);
   }
 
+  async updateLocalizacao(
+    id: number,
+    updateLocalizacaoPessoaDto: UpdateLocalizacaoPessoaDto,
+  ) {
+    const updateLocalizacao = { localizacao: updateLocalizacaoPessoaDto };
+    return this.pessoarepository.update(id, updateLocalizacao);
+  }
+
+  async updateOnline(id: number, updateOnlinePessoaDto: UpdateOnlinePessoaDto) {
+    const updateOnline = { online: updateOnlinePessoaDto };
+    return this.pessoarepository.update(id, updateOnline);
+  }
+
   async updateVeiculo(id: number, updateVeiculoDto: VeiculoPessoaDto) {
     const updateVeiculoPessoa = {
       veiculo: JSON.parse(JSON.stringify(updateVeiculoDto)),
@@ -102,7 +118,8 @@ export class PessoaService {
   }
 
   async remove(id: number) {
-    const desativa = { ativo: false };
+    let desativa = new Pessoa();
+    desativa = { ...desativa, ativo: false };
 
     return this.pessoarepository.remove(id, desativa);
   }

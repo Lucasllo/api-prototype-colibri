@@ -12,13 +12,13 @@ export class PessoaRepository {
     .firestore()
     .collection('pessoa');
 
-  public async getUser(id: number): Promise<any> {
-    let result = null;
+  public async getUser(id: number): Promise<Pessoa> {
+    let result: Pessoa = null;
     const usuario = this.collectionPessoaRef.where('id', '==', id);
 
     await usuario.get().then((u) => {
       u.forEach((u) => {
-        result = u.data();
+        result = u.data() as Pessoa;
       });
     });
 

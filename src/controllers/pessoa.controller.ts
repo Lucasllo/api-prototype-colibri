@@ -20,6 +20,8 @@ import { User } from 'src/decorators/user.decorator';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 import { Pessoa } from 'src/entities/pessoa.entity';
 import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
+import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
+import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -43,6 +45,27 @@ export class PessoaController {
   @Patch()
   async update(@User() user: Pessoa, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoaService.updateDados(user.id, updatePessoaDto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @Patch('localizacaoAtual')
+  async updateLocalizacao(
+    @User() user: Pessoa,
+    @Body() updateLocalizacaoPessoaDto: UpdateLocalizacaoPessoaDto,
+  ) {
+    return this.pessoaService.updateLocalizacao(
+      user.id,
+      updateLocalizacaoPessoaDto,
+    );
+  }
+
+  @ApiBearerAuth('access-token')
+  @Patch('online')
+  async updateOnline(
+    @User() user: Pessoa,
+    @Body() updateOnlinePessoaDto: UpdateOnlinePessoaDto,
+  ) {
+    return this.pessoaService.updateOnline(user.id, updateOnlinePessoaDto);
   }
 
   @Roles(Role.Admin)

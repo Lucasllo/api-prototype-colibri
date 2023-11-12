@@ -1,3 +1,4 @@
+import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
 import { Veiculo } from './veiculo.entity';
 
 export class Pessoa {
@@ -34,4 +35,6 @@ export class Pessoa {
   online: boolean;
 
   role: number;
+
+  localizacao: UpdateLocalizacaoPessoaDto;
 }
