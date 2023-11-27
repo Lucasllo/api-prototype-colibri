@@ -11,10 +11,13 @@ import { AuthGuard } from './guard/auth.guard';
 import { AuthService } from './services/auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { FileModule } from './modules/file.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './services/tasks.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60,
@@ -39,6 +42,7 @@ import { FileModule } from './modules/file.module';
       useClass: AuthGuard,
     },
     AuthService,
+    TasksService,
   ],
 })
 export class AppModule implements NestModule {

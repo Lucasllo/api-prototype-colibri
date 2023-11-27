@@ -13,6 +13,12 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthRepository],
-  exports: [AuthRepository],
+  exports: [
+    AuthRepository,
+    JwtModule.register({
+      secret: 'kkhJaEB3NBE$4Kf746nCQm!e#ySLJ!dP',
+      // signOptions: { expiresIn: '7 days' }, usado para definir globalmente quanto tempo o jwt vai valer
+    }),
+  ],
 })
 export class AuthModule {}

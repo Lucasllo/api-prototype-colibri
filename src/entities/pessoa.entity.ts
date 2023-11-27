@@ -1,5 +1,7 @@
-import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
 import { Veiculo } from './veiculo.entity';
+import { Documentos } from './documentos.entity';
+import { Localizacao } from './localizacao.entity';
+import { Modalidade } from './modalidade.entity';
 
 export class Pessoa {
   id: number;
@@ -8,9 +10,13 @@ export class Pessoa {
 
   email: string;
 
+  emailValidado: boolean;
+
   senha: string;
 
   telefone: string;
+
+  telefoneValidado: boolean;
 
   cpf: string;
 
@@ -20,21 +26,19 @@ export class Pessoa {
 
   CNH: string;
 
-  CHNImagem: string;
-
-  perfilImagem: string;
-
-  CLRVImagem: string;
-
-  antecedentesImagem: string;
+  documentos: Documentos;
 
   dataCadastro: Date;
-
-  ativo: boolean;
 
   online: boolean;
 
   role: number;
 
-  localizacao: UpdateLocalizacaoPessoaDto;
+  localizacao: Localizacao;
+
+  modalidade: Modalidade;
+
+  tempoOnline: number;
+
+  dataOnline: Date;
 }

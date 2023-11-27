@@ -29,8 +29,10 @@ export class PessoaRepository {
     }
   }
 
-  public async getAll(): Promise<firebase.firestore.DocumentData[]> {
-    return (await this.collectionPessoaRef.get()).docs.map((doc) => doc.data());
+  public async getAll() {
+    return (await this.collectionPessoaRef.get()).docs.map(
+      (doc) => doc.data() as Pessoa,
+    );
   }
 
   public async create(pessoa: Pessoa): Promise<any> {
