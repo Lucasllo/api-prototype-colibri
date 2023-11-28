@@ -22,6 +22,7 @@ import { Pessoa } from 'src/entities/pessoa.entity';
 import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
 import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
 import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
+import { UpdateModalidadePessoaDto } from 'src/dto/pessoa/updateModalidade-pessoa.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -94,5 +95,17 @@ export class PessoaController {
     @Body() changePasswordAuthDto: ChangePasswordAuthDto,
   ) {
     return this.pessoaService.updateSenha(user.id, changePasswordAuthDto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @Post('modalidadePagamento')
+  modalidadePagamento(
+    @User() user: Pessoa,
+    @Body() updateModalidadePessoaDto: UpdateModalidadePessoaDto,
+  ) {
+    return this.pessoaService.updateModalidade(
+      user.id,
+      updateModalidadePessoaDto,
+    );
   }
 }
