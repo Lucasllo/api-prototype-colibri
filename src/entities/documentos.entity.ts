@@ -1,19 +1,19 @@
 export class Documentos {
-  CHNImagem: string;
+  CHNImagem: string = '';
 
-  CHNImagemValidado: boolean;
+  CHNImagemValidado: boolean = false;
 
-  perfilImagem: string;
+  perfilImagem: string = '';
 
-  perfilImagemValidado: boolean;
+  perfilImagemValidado: boolean = false;
 
-  CLRVImagem: string;
+  CLRVImagem: string = '';
 
-  CLRVImagemValidado: boolean;
+  CLRVImagemValidado: boolean = false;
 
-  antecedentesImagem: string;
+  antecedentesImagem: string = '';
 
-  antecedentesImagemValidado: boolean;
+  antecedentesImagemValidado: boolean = false;
 
   documentosAnalisados: boolean = false;
 }

@@ -14,6 +14,7 @@ import { Documentos } from 'src/entities/documentos.entity';
 import { Localizacao } from 'src/entities/localizacao.entity';
 import { Modalidade } from 'src/entities/modalidade.entity';
 import { UpdateModalidadePessoaDto } from '../dto/pessoa/updateModalidade-pessoa.dto';
+import { VeiculoTipoPessoaDto } from 'src/dto/pessoa/veiculoTipo-pessoa.dto';
 
 @Injectable()
 export class PessoaService {
@@ -146,8 +147,21 @@ export class PessoaService {
   }
 
   async updateVeiculo(id: number, updateVeiculoDto: VeiculoPessoaDto) {
+    const usuario: Pessoa = await this.pessoarepository.getUser(id);
     const updateVeiculoPessoa = {
-      veiculo: updateVeiculoDto,
+      veiculo: { ...usuario.veiculo, ...updateVeiculoDto },
+    };
+
+    return this.pessoarepository.update(id, updateVeiculoPessoa);
+  }
+
+  async updateTipoVeiculo(
+    id: number,
+    updateTipoVeiculoDto: VeiculoTipoPessoaDto,
+  ) {
+    const usuario: Pessoa = await this.pessoarepository.getUser(id);
+    const updateVeiculoPessoa = {
+      veiculo: { ...usuario.veiculo, ...updateTipoVeiculoDto },
     };
 
     return this.pessoarepository.update(id, updateVeiculoPessoa);

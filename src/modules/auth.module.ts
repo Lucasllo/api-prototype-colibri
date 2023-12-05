@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { AuthController } from '../controllers/auth.controller';
 import { AuthRepository } from '../repositorys/auth.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { MensagemModule } from './mensagem.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
       secret: 'kkhJaEB3NBE$4Kf746nCQm!e#ySLJ!dP',
       // signOptions: { expiresIn: '7 days' }, usado para definir globalmente quanto tempo o jwt vai valer
     }),
+    MensagemModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthRepository],

@@ -10,12 +10,10 @@ import {
   Param,
 } from '@nestjs/common';
 import { PessoaService } from '../services/pessoa.service';
-import { CreatePessoaDto } from '../dto/pessoa/create-pessoa.dto';
 import { RoleGuard } from '../guard/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/decorators/public.decorator';
 import { User } from 'src/decorators/user.decorator';
 import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
 import { Pessoa } from 'src/entities/pessoa.entity';
@@ -23,6 +21,7 @@ import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
 import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
 import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
 import { UpdateModalidadePessoaDto } from 'src/dto/pessoa/updateModalidade-pessoa.dto';
+import { VeiculoTipoPessoaDto } from 'src/dto/pessoa/veiculoTipo-pessoa.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
@@ -30,11 +29,11 @@ import { UpdateModalidadePessoaDto } from 'src/dto/pessoa/updateModalidade-pesso
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
-  @Public()
-  @Post()
-  create(@Body() createPessoaDto: CreatePessoaDto) {
-    return this.pessoaService.create(createPessoaDto);
-  }
+  // @Public()
+  // @Post()
+  // create(@Body() createPessoaDto: CreatePessoaDto) {
+  //   return this.pessoaService.create(createPessoaDto);
+  // }
 
   @ApiBearerAuth('access-token')
   @Get()
@@ -67,6 +66,15 @@ export class PessoaController {
     @Body() updateOnlinePessoaDto: UpdateOnlinePessoaDto,
   ) {
     return this.pessoaService.updateOnline(user.id, updateOnlinePessoaDto);
+  }
+
+  @ApiBearerAuth('access-token')
+  @Patch('tipoVeiculo')
+  async updateTipoVeiculo(
+    @User() user: Pessoa,
+    @Body() updateTipoVeiculoDto: VeiculoTipoPessoaDto,
+  ) {
+    return this.pessoaService.updateTipoVeiculo(user.id, updateTipoVeiculoDto);
   }
 
   @Roles(Role.Admin)

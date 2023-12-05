@@ -6,5 +6,6 @@ import { MensagemRepository } from '../repositorys/mensagem.repository';
 @Module({
   controllers: [MensagemController],
   providers: [MensagemService, MensagemRepository],
+  exports: [MensagemService],
 })
 export class MensagemModule {}

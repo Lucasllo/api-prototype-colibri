@@ -12,6 +12,17 @@ export class MensagemService {
     return this.mensagemRepository.create(createMensagemDto, id);
   }
 
+  createDocumentsWarning(mensagem: string, type: string, id: number) {
+    const message = {
+      descricao: mensagem,
+      tipo: type,
+      data: JSON.stringify(new Date()),
+      pessoa: id,
+    };
+
+    return this.mensagemRepository.create(message, id);
+  }
+
   findAll() {
     const lista: Promise<firebase.firestore.DocumentData[]> =
       this.mensagemRepository.getAll();

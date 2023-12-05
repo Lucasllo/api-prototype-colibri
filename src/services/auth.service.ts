@@ -14,6 +14,7 @@ import { Documentos } from 'src/entities/documentos.entity';
 import { Localizacao } from 'src/entities/localizacao.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Modalidade } from 'src/entities/modalidade.entity';
+import { MensagemService } from './mensagem.service';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
   constructor(
     private readonly authRepository: AuthRepository,
     private readonly jwtService: JwtService,
+    private readonly mensagemService: MensagemService,
   ) {}
 
   async login(
@@ -31,11 +33,36 @@ export class AuthService {
     let result;
     const pessoa: Pessoa = await this.authRepository.login(loginAuthDto);
 
-    const documentosValidados =
-      pessoa.documentos.CHNImagemValidado &&
-      pessoa.documentos.CLRVImagemValidado &&
-      pessoa.documentos.antecedentesImagemValidado &&
-      pessoa.documentos.perfilImagemValidado;
+    const documents = [];
+    let documentosValidados = true;
+    for (const [key, value] of Object.entries(pessoa.documentos)) {
+      if (
+        (key == 'CHNImagemValidado' ||
+          key == 'CLRVImagemValidado' ||
+          key == 'antecedentesImagemValidado' ||
+          key == 'perfilImagemValidado') &&
+        value == false
+      ) {
+        documentosValidados = false;
+        documents.push(
+          key.slice(0, -8) == 'perfilImagem'
+            ? 'Imagem de perfil'
+            : key.slice(0, -8) == 'antecedentesImagem'
+            ? 'Imagem de antecedentes criminais'
+            : key.slice(0, -8) == 'CLRVImagem'
+            ? 'Imagem do CLRV'
+            : key.slice(0, -8) == 'CHNImagem'
+            ? 'Imagem do CNH'
+            : '',
+        );
+      }
+    }
+
+    // const documentosValidados =
+    //   pessoa.documentos.CHNImagemValidado &&
+    //   pessoa.documentos.CLRVImagemValidado &&
+    //   pessoa.documentos.antecedentesImagemValidado &&
+    //   pessoa.documentos.perfilImagemValidado;
 
     // logica de verificacao de documentos;
     // alterar retorno para {token: ..., type: 'valid', 'semi valid'}
@@ -44,6 +71,22 @@ export class AuthService {
       result = this.createToken(pessoa, 'valid');
     } else if (pessoa.telefoneValidado && !documentosValidados) {
       result = this.createToken(pessoa, 'semiValid');
+      if (pessoa.documentos.documentosAnalisados) {
+        const mensagem = `Os seguintes documentos não puderam ser analisados, por favor, envie novamente: ${documents}`;
+
+        this.mensagemService.createDocumentsWarning(
+          mensagem,
+          'warning',
+          pessoa.id,
+        );
+      } else {
+        const mensagem = 'Documentos ainda não foram analisados, aguarde!';
+        this.mensagemService.createDocumentsWarning(
+          mensagem,
+          'alert',
+          pessoa.id,
+        );
+      }
     } else {
       throw new UnauthorizedException('Usuario não validado.');
     }
