@@ -5,16 +5,16 @@ import { CreatePessoaDto } from '../dto/pessoa/create-pessoa.dto';
 import { PessoaRepository } from '../repositorys/pessoa.repository';
 import * as bcrypt from 'bcrypt';
 import { Pessoa } from '../entities/pessoa.entity';
-import { Veiculo } from 'src/entities/veiculo.entity';
-import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
-import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
-import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
-import { UpdateOnlinePessoaDto } from 'src/dto/pessoa/updateOnline-pessoa.dto';
-import { Documentos } from 'src/entities/documentos.entity';
-import { Localizacao } from 'src/entities/localizacao.entity';
-import { Modalidade } from 'src/entities/modalidade.entity';
+import { Veiculo } from '../entities/veiculo.entity';
+import { VeiculoPessoaDto } from '../dto/pessoa/veiculo-pessoa.dto';
+import { ChangePasswordAuthDto } from '../dto/auth/change-password-auth.dto';
+import { UpdateLocalizacaoPessoaDto } from '../dto/pessoa/updateLocalizacao-pessoa.dto';
+import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
+import { Documentos } from '../entities/documentos.entity';
+import { Localizacao } from '../entities/localizacao.entity';
+import { Modalidade } from '../entities/modalidade.entity';
 import { UpdateModalidadePessoaDto } from '../dto/pessoa/updateModalidade-pessoa.dto';
-import { VeiculoTipoPessoaDto } from 'src/dto/pessoa/veiculoTipo-pessoa.dto';
+import { VeiculoTipoPessoaDto } from '../dto/pessoa/veiculoTipo-pessoa.dto';
 
 @Injectable()
 export class PessoaService {

@@ -85,20 +85,4 @@ export class QueueService {
       console.log(error);
     }
   }
-
-  ConsumerStart() {
-    this.app.on('processing_error', (err) => {
-      console.log(err);
-    });
-
-    this.app.start();
-  }
-
-  ConsumerStop() {
-    this.app.on('processing_error', (err) => {
-      console.log(err);
-    });
-
-    this.app.stop();
-  }
 }

@@ -12,10 +12,10 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CarteiraService } from '../services/carteira.service';
 import { CreateCarteiraDto } from '../dto/carteira/create-carteira.dto';
 import { Role } from '../enum/role.enum';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { RoleGuard } from '../guard/role.guard';
-import { User } from 'src/decorators/user.decorator';
-import { Pessoa } from 'src/entities/pessoa.entity';
+import { User } from '../decorators/user.decorator';
+import { Pessoa } from '../entities/pessoa.entity';
 
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin)

@@ -11,28 +11,23 @@ import {
 } from '@nestjs/common';
 import { PessoaService } from '../services/pessoa.service';
 import { RoleGuard } from '../guard/role.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { User } from 'src/decorators/user.decorator';
-import { VeiculoPessoaDto } from 'src/dto/pessoa/veiculo-pessoa.dto';
-import { Pessoa } from 'src/entities/pessoa.entity';
-import { ChangePasswordAuthDto } from 'src/dto/auth/change-password-auth.dto';
-import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pessoa.dto';
+import { User } from '../decorators/user.decorator';
+import { VeiculoPessoaDto } from '../dto/pessoa/veiculo-pessoa.dto';
+import { Pessoa } from '../entities/pessoa.entity';
+import { ChangePasswordAuthDto } from '../dto/auth/change-password-auth.dto';
+import { UpdateLocalizacaoPessoaDto } from '../dto/pessoa/updateLocalizacao-pessoa.dto';
 import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
-import { UpdateModalidadePessoaDto } from 'src/dto/pessoa/updateModalidade-pessoa.dto';
-import { VeiculoTipoPessoaDto } from 'src/dto/pessoa/veiculoTipo-pessoa.dto';
-import { Public } from 'src/decorators/public.decorator';
-import { QueueService } from 'src/services/queue.service';
+import { UpdateModalidadePessoaDto } from '../dto/pessoa/updateModalidade-pessoa.dto';
+import { VeiculoTipoPessoaDto } from '../dto/pessoa/veiculoTipo-pessoa.dto';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
 @Controller('pessoa')
 export class PessoaController {
-  constructor(
-    private readonly pessoaService: PessoaService,
-    private readonly sqsProducer: QueueService,
-  ) {}
+  constructor(private readonly pessoaService: PessoaService) {}
 
   // @Public()
   // @Post()
@@ -120,39 +115,5 @@ export class PessoaController {
       user.id,
       updateModalidadePessoaDto,
     );
-  }
-
-  @Get('hello2')
-  @Public()
-  async getHello2() {
-    await this.sqsProducer.sendMessageToQueue(
-      JSON.stringify({ teste: 'envio' }),
-    );
-    console.log('Message send ----');
-    return 'hello2';
-  }
-
-  @Get('hello3')
-  @Public()
-  async getHello3() {
-    await this.sqsProducer.PollMessages();
-    console.log('Message poll ----');
-    return 'hello3';
-  }
-
-  @Get('hello4')
-  @Public()
-  getHello4() {
-    this.sqsProducer.ConsumerStart();
-    console.log('Message consumerStart ----');
-    return 'hello4';
-  }
-
-  @Get('hello5')
-  @Public()
-  getHello5() {
-    this.sqsProducer.ConsumerStop();
-    console.log('Message consumerStop ----');
-    return 'hello5';
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCarteiraDto } from '../dto/carteira/create-carteira.dto';
 import { CarteiraRepository } from '../repositorys/carteira.repository';
 import * as firebase from 'firebase-admin';
-import { Carteira } from 'src/entities/carteira.entity';
+import { Carteira } from '../entities/carteira.entity';
 
 @Injectable()
 export class CarteiraService {

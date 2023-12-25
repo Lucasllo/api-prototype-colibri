@@ -5,15 +5,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthRepository } from '../repositorys/auth.repository';
-import { RecoverPasswordAuthDto } from 'src/dto/auth/recover-password -auth.dto';
-import { CreatePessoaDto } from 'src/dto/pessoa/create-pessoa.dto';
-import { Veiculo } from 'src/entities/veiculo.entity';
-import { Pessoa } from 'src/entities/pessoa.entity';
+import { RecoverPasswordAuthDto } from '../dto/auth/recover-password -auth.dto';
+import { CreatePessoaDto } from '../dto/pessoa/create-pessoa.dto';
+import { Veiculo } from '../entities/veiculo.entity';
+import { Pessoa } from '../entities/pessoa.entity';
 import * as bcrypt from 'bcrypt';
-import { Documentos } from 'src/entities/documentos.entity';
-import { Localizacao } from 'src/entities/localizacao.entity';
+import { Documentos } from '../entities/documentos.entity';
+import { Localizacao } from '../entities/localizacao.entity';
 import { JwtService } from '@nestjs/jwt';
-import { Modalidade } from 'src/entities/modalidade.entity';
+import { Modalidade } from '../entities/modalidade.entity';
 import { MensagemService } from './mensagem.service';
 
 @Injectable()

@@ -4,7 +4,7 @@ import { PessoaController } from '../controllers/pessoa.controller';
 import { AuthModule } from './auth.module';
 import { PessoaRepository } from '../repositorys/pessoa.repository';
 import { CarteiraModule } from './carteira.module';
-import { QueueService } from 'src/services/queue.service';
+import { QueueService } from '../services/queue.service';
 
 @Module({
   imports: [AuthModule, CarteiraModule],

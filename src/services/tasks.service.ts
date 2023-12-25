@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { PessoaService } from './pessoa.service';
-import { Pessoa } from 'src/entities/pessoa.entity';
+import { Pessoa } from '../entities/pessoa.entity';
 
 @Injectable()
 export class TasksService {

@@ -1,16 +1,16 @@
 import { LoginAuthDto } from '../dto/auth/create-auth.dto';
 import { Controller, Post, Body, UseGuards, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/decorators/public.decorator';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Public } from '../decorators/public.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { AuthService } from '../services/auth.service';
 import { Role } from '../enum/role.enum';
 import { RoleGuard } from '../guard/role.guard';
-import { RecoverPasswordAuthDto } from 'src/dto/auth/recover-password -auth.dto';
-import { PasswordCode } from 'src/decorators/passwordCode.decorator';
-import { User } from 'src/decorators/user.decorator';
-import { Pessoa } from 'src/entities/pessoa.entity';
-import { CreatePessoaDto } from 'src/dto/pessoa/create-pessoa.dto';
+import { RecoverPasswordAuthDto } from '../dto/auth/recover-password -auth.dto';
+import { PasswordCode } from '../decorators/passwordCode.decorator';
+import { User } from '../decorators/user.decorator';
+import { Pessoa } from '../entities/pessoa.entity';
+import { CreatePessoaDto } from '../dto/pessoa/create-pessoa.dto';
 
 @Roles(Role.Admin)
 @UseGuards(RoleGuard)

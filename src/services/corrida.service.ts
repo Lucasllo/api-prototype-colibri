@@ -4,7 +4,7 @@ import { CreateCorridaDto } from '../dto/corrida/create-corrida.dto';
 import { CorridaRepository } from '../repositorys/corrida.repository';
 import * as firebase from 'firebase-admin';
 import { QueueService } from './queue.service';
-import { AcceptCorridaDto } from 'src/dto/corrida/accept-corrida.dto';
+import { AcceptCorridaDto } from '../dto/corrida/accept-corrida.dto';
 
 @Injectable()
 export class CorridaService {

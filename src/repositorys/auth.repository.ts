@@ -2,7 +2,7 @@ import { LoginAuthDto } from '../dto/auth/create-auth.dto';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as firebase from 'firebase-admin';
 import * as bcrypt from 'bcrypt';
-import { Pessoa } from 'src/entities/pessoa.entity';
+import { Pessoa } from '../entities/pessoa.entity';
 
 @Injectable()
 export class AuthRepository {

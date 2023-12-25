@@ -17,9 +17,9 @@ import {
   FileFieldsInterceptor,
   FileInterceptor,
 } from '@nestjs/platform-express';
-import { User } from 'src/decorators/user.decorator';
-import { Role } from 'src/enum/role.enum';
-import { Roles } from 'src/decorators/roles.decorator';
+import { User } from '../decorators/user.decorator';
+import { Role } from '../enum/role.enum';
+import { Roles } from '../decorators/roles.decorator';
 
 @Roles(Role.User, Role.Admin)
 @ApiTags('file')

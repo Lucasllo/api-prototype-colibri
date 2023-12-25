@@ -13,9 +13,9 @@ import { MensagemService } from '../services/mensagem.service';
 import { UpdateMensagemDto } from '../dto/mensagem/update-mensagem.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RoleGuard } from '../guard/role.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../enum/role.enum';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
