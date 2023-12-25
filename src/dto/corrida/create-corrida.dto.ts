@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsObject, IsString } from 'class-validator';
 import { EnderecoDto } from '../endereco/endereco.dto';
+import { UpdateLocalizacaoPessoaDto } from '../pessoa/updateLocalizacao-pessoa.dto';
 
 export class CreateCorridaDto {
   @ApiProperty({
@@ -9,6 +10,20 @@ export class CreateCorridaDto {
   })
   @IsString()
   data: string;
+
+  @ApiProperty({
+    example: '{"longitude": "9999999", "latitude": "123456789"}',
+    description: 'Coordenadas do local inicio da corrida',
+  })
+  @IsObject()
+  coordenadaInicial: UpdateLocalizacaoPessoaDto;
+
+  @ApiProperty({
+    example: '{"longitude": "9999999", "latitude": "123456789"}',
+    description: 'Coordenadas do local final da corrida',
+  })
+  @IsObject()
+  coordenadaFinal: UpdateLocalizacaoPessoaDto;
 
   @ApiProperty({
     example:

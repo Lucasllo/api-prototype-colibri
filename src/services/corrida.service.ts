@@ -3,10 +3,15 @@ import { Injectable } from '@nestjs/common';
 import { CreateCorridaDto } from '../dto/corrida/create-corrida.dto';
 import { CorridaRepository } from '../repositorys/corrida.repository';
 import * as firebase from 'firebase-admin';
+import { QueueService } from './queue.service';
+import { AcceptCorridaDto } from 'src/dto/corrida/accept-corrida.dto';
 
 @Injectable()
 export class CorridaService {
-  constructor(private readonly corridaRepository: CorridaRepository) {}
+  constructor(
+    private readonly corridaRepository: CorridaRepository,
+    private readonly queueService: QueueService,
+  ) {}
 
   async create(createCorridaDto: CreateCorridaDto, userId: number) {
     return this.corridaRepository.create(createCorridaDto, userId);
@@ -46,5 +51,17 @@ export class CorridaService {
 
   async update(id: string, updateCorridaDto: UpdateCorridaDto) {
     return this.corridaRepository.update(id, updateCorridaDto);
+  }
+
+  async buscarCorrida(user) {
+    console.log(user);
+    return await this.queueService.PollMessages();
+  }
+
+  async aceitarCorrida(acceptCorridaDto: AcceptCorridaDto, userId: number) {
+    this.create(acceptCorridaDto.corrida, userId);
+    return await this.queueService.DeleteMessagesFromQueue(
+      acceptCorridaDto.codigo,
+    );
   }
 }

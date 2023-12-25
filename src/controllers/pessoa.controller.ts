@@ -22,12 +22,17 @@ import { UpdateLocalizacaoPessoaDto } from 'src/dto/pessoa/updateLocalizacao-pes
 import { UpdateOnlinePessoaDto } from '../dto/pessoa/updateOnline-pessoa.dto';
 import { UpdateModalidadePessoaDto } from 'src/dto/pessoa/updateModalidade-pessoa.dto';
 import { VeiculoTipoPessoaDto } from 'src/dto/pessoa/veiculoTipo-pessoa.dto';
+import { Public } from 'src/decorators/public.decorator';
+import { QueueService } from 'src/services/queue.service';
 @Roles(Role.Admin, Role.User)
 @UseGuards(RoleGuard)
 @ApiTags('pessoa')
 @Controller('pessoa')
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) {}
+  constructor(
+    private readonly pessoaService: PessoaService,
+    private readonly sqsProducer: QueueService,
+  ) {}
 
   // @Public()
   // @Post()
@@ -115,5 +120,39 @@ export class PessoaController {
       user.id,
       updateModalidadePessoaDto,
     );
+  }
+
+  @Get('hello2')
+  @Public()
+  async getHello2() {
+    await this.sqsProducer.sendMessageToQueue(
+      JSON.stringify({ teste: 'envio' }),
+    );
+    console.log('Message send ----');
+    return 'hello2';
+  }
+
+  @Get('hello3')
+  @Public()
+  async getHello3() {
+    await this.sqsProducer.PollMessages();
+    console.log('Message poll ----');
+    return 'hello3';
+  }
+
+  @Get('hello4')
+  @Public()
+  getHello4() {
+    this.sqsProducer.ConsumerStart();
+    console.log('Message consumerStart ----');
+    return 'hello4';
+  }
+
+  @Get('hello5')
+  @Public()
+  getHello5() {
+    this.sqsProducer.ConsumerStop();
+    console.log('Message consumerStop ----');
+    return 'hello5';
   }
 }

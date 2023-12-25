@@ -9,12 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { CorridaService } from '../services/corrida.service';
 import { CreateCorridaDto } from '../dto/corrida/create-corrida.dto';
 import { Role } from '../enum/role.enum';
 import { RoleGuard } from '../guard/role.guard';
-import { User } from 'src/decorators/user.decorator';
+import { User } from '../decorators/user.decorator';
+import { AcceptCorridaDto } from '../dto/corrida/accept-corrida.dto';
 
 @ApiBearerAuth('access-token')
 @Roles(Role.Admin)
@@ -47,5 +48,23 @@ export class CorridaController {
     @Body() updateCorridaDto: UpdateCorridaDto,
   ) {
     return this.corridaService.update(id, updateCorridaDto);
+  }
+
+  @Roles(Role.User)
+  @Post('buscar')
+  async buscarCorrida(@User() user) {
+    return this.corridaService.buscarCorrida(user);
+  }
+
+  @Roles(Role.User)
+  @Post('aceitar')
+  async aceitarCorrida(
+    @Body() acceptCorridaDto: AcceptCorridaDto,
+    @User() user,
+  ) {
+    return this.corridaService.aceitarCorrida(
+      acceptCorridaDto,
+      Number(user.id),
+    );
   }
 }
