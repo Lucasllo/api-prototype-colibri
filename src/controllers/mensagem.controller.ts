@@ -51,8 +51,11 @@ export class MensagemController {
     return this.mensagemService.update(Number(id), updateMensagemDto);
   }
 
-  @Delete(':idUser')
-  async remove(@Param('idUser') id: string) {
-    return this.mensagemService.remove(Number(id));
+  @Delete(':idUser/:idMensagem')
+  async remove(
+    @Param('idUser') id: string,
+    @Param('idMensagem') idMensagem: string,
+  ) {
+    return this.mensagemService.remove(Number(id), idMensagem);
   }
 }

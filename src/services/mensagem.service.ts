@@ -9,7 +9,11 @@ export class MensagemService {
   constructor(private readonly mensagemRepository: MensagemRepository) {}
 
   create(createMensagemDto: CreateMensagemDto, id: number) {
-    return this.mensagemRepository.create(createMensagemDto, id);
+    const message = {
+      ...createMensagemDto,
+      ativo: true,
+    };
+    return this.mensagemRepository.create(message, id);
   }
 
   createDocumentsWarning(mensagem: string, type: string, id: number) {
@@ -18,6 +22,7 @@ export class MensagemService {
       tipo: type,
       data: JSON.stringify(new Date()),
       pessoa: id,
+      ativo: true,
     };
 
     return this.mensagemRepository.create(message, id);
@@ -55,8 +60,8 @@ export class MensagemService {
     return this.mensagemRepository.update(id, updateMensagemDto);
   }
 
-  remove(id: number) {
+  remove(id: number, idMensagem: string) {
     const desativa = { ativo: false };
-    return this.mensagemRepository.remove(id, desativa);
+    return this.mensagemRepository.remove(id, desativa, idMensagem);
   }
 }

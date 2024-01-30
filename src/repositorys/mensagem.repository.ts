@@ -50,6 +50,7 @@ export class MensagemRepository {
         return (
           await this.collectionMensagemRef
             .where('pessoa', '==', pessoaRef)
+            .where('ativo', '!=', false)
             .get()
         ).docs.map((doc) => doc.data());
       } else {
@@ -73,7 +74,8 @@ export class MensagemRepository {
       });
       if (pessoaRef != null) {
         mensagem = { ...mensagem, pessoa: pessoaRef };
-
+        mensagem.id =
+          (await this.collectionMensagemRef.count().get()).data().count + 1;
         return this.collectionMensagemRef.add(mensagem);
       } else {
         throw new BadRequestException('Pessoa não encontrado');
@@ -117,7 +119,38 @@ export class MensagemRepository {
     }
   }
 
-  public async remove(id: number, mensagem: any) {
-    return this.update(id, mensagem); // verificar a necessidade da propriedade "ativo" na mensagem
+  public async remove(id: number, mensagem: any, idMensagem: string) {
+    if (Number.isNaN(id)) {
+      throw new BadRequestException('Pessoa não encontrado');
+    }
+    let pessoaRef = null;
+    const collectionPessoaRef = firebase.firestore().collection('pessoa');
+    const usuario = collectionPessoaRef.where('id', '==', id);
+
+    try {
+      await usuario.get().then((u) => {
+        u.forEach((u) => {
+          pessoaRef = collectionPessoaRef.doc(u.id);
+        });
+      });
+
+      if (pessoaRef != null) {
+        return await this.collectionMensagemRef
+          .where('pessoa', '==', pessoaRef)
+          .where('id', '==', idMensagem)
+          .get()
+          .then((u) => {
+            u.forEach(async (u) => {
+              pessoaRef = await this.collectionMensagemRef
+                .doc(u.id)
+                .update(mensagem);
+            });
+          });
+      } else {
+        throw new BadRequestException('Pessoa não encontrado');
+      }
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 }
